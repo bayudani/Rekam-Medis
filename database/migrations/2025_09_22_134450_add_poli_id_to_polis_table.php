@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('polis', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('poli_id')->nullable()->constrained('polis')->onDelete('set null');
+
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('polis');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };
