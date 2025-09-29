@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PolisResource\Pages;
 use App\Filament\Admin\Resources\PolisResource\RelationManagers;
+use App\Models\poli;
 use App\Models\Polis;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,9 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PolisResource extends Resource
 {
-    protected static ?string $model = Polis::class;
+    protected static ?string $model = poli::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'rekam_medis';
+    }
+
 
     public static function form(Form $form): Form
     {
