@@ -294,7 +294,6 @@
         </div>
 
         {{-- kebiasaan --}}
-
         <div class="field-group">
             <b>Kebiasaan:</b>
             @php $kebiasaan = $record->kebiasaan ?? []; @endphp

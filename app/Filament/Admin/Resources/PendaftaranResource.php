@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 
 class PendaftaranResource extends Resource
@@ -27,6 +29,12 @@ class PendaftaranResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-plus';
     protected static ?string $navigationLabel = 'Pendaftaran Kunjungan';
     protected static ?int $navigationSort = 2;
+
+    public static function canCreate(): bool
+    {
+        // Hanya user dengan role 'loket' yang bisa membuat data baru
+        return auth()->user()->role === 'loket';
+    }
 
     /**
      * Kontrol siapa yang bisa melihat menu ini di sidebar.
@@ -156,14 +164,11 @@ class PendaftaranResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->headerActions([ // <-- TOMBOL BARU DITAMBAHKAN DI SINI
-                Tables\Actions\Action::make('export')
-                    ->label('Export Laporan (CSV)')
-                    ->icon('heroicon-o-document-arrow-down')
+            ->headerActions([
+                // TOMBOL EXPORT LAMA DIGANTI DENGAN YANG INI
+                FilamentExportHeaderAction::make('export')
+                    ->label('Export Laporan')
                     ->color('success')
-                    ->action(function ($livewire) {
-                        return static::exportCsv($livewire->getFilteredTableQuery());
-                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -175,44 +180,7 @@ class PendaftaranResource extends Resource
     /**
      * Fungsi custom untuk handle logic export ke CSV.
      */
-    public static function exportCsv(Builder $query): StreamedResponse
-    {
-        $fileName = 'laporan-pendaftaran-' . date('Y-m-d') . '.csv';
-
-        return response()->streamDownload(function () use ($query) {
-            $handle = fopen('php://output', 'w');
-
-            // Header CSV
-            fputcsv($handle, [
-                'No RM',
-                'Nama Pasien',
-                'Tanggal Lahir',
-                'Jenis Kelamin',
-                'Poli Tujuan',
-                'Dokter',
-                'Status',
-                'Waktu Pendaftaran',
-            ]);
-
-            // Data Pendaftaran
-            $query->with(['pasien', 'poli', 'dokter'])->chunk(200, function ($pendaftarans) use ($handle) {
-                foreach ($pendaftarans as $pendaftaran) {
-                    fputcsv($handle, [
-                        $pendaftaran->pasien->no_rm ?? '-',
-                        $pendaftaran->pasien->nama ?? '-',
-                        $pendaftaran->pasien->tgl_lahir ?? '-',
-                        $pendaftaran->pasien->jk ?? '-',
-                        $pendaftaran->poli->nama_poli ?? '-',
-                        $pendaftaran->dokter->name ?? '-',
-                        $pendaftaran->status,
-                        $pendaftaran->created_at->format('Y-m-d H:i:s'),
-                    ]);
-                }
-            });
-
-            fclose($handle);
-        }, $fileName);
-    }
+    
 
     public static function getPages(): array
     {

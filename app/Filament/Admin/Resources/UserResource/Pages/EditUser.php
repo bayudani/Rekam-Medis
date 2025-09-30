@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Admin\Resources\PolisResource\Pages;
+namespace App\Filament\Admin\Resources\UserResource\Pages;
 
-use App\Filament\Admin\Resources\PolisResource;
+use App\Filament\Admin\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPolis extends EditRecord
+class EditUser extends EditRecord
 {
-    protected static string $resource = PolisResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array
     {

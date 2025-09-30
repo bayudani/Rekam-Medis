@@ -21,6 +21,12 @@ class PasienResource extends Resource
     protected static ?string $navigationLabel = 'Data Pasien';
     protected static ?int $navigationSort = 1;
 
+    public static function canCreate(): bool
+    {
+        // Hanya user dengan role 'loket' yang bisa membuat data baru
+        return auth()->user()->role === 'loket';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -81,8 +87,8 @@ class PasienResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->visible(fn () => auth()->user()->role === 'loket'),
+                Tables\Actions\DeleteAction::make()->visible(fn () => auth()->user()->role === 'loket'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

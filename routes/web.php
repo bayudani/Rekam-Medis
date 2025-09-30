@@ -12,4 +12,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::view('tentang-puskesmas', 'tentangPuskesmas')
+    ->name('tentangPuskesmas');
+
+Route::view('jadwal-dokter', 'JadwalDokter')
+    ->name('JadwalDokter');
+
+
 require __DIR__.'/auth.php';
