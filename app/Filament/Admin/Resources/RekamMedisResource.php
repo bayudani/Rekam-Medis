@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class RekamMedisResource extends Resource
 {
@@ -116,6 +118,30 @@ class RekamMedisResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()->label('Periksa'),
+                Tables\Actions\Action::make('cetakPdf')
+                    ->label('Cetak PDF')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Pendaftaran $record) {
+                        // Tentukan view mana yang mau dipakai berdasarkan poli
+                        $viewName = 'pdf.umum'; // Default ke umum
+                        if ($record->poli?->nama_poli === 'Poli Gigi & Mulut') {
+                            $viewName = 'pdf.gigi';
+                        }
+
+                        // Load view, kasih data, terus jadiin PDF
+                        $pdf = Pdf::loadView($viewName, ['record' => $record]);
+                        
+                        // Buat nama file yang keren
+                        $filename = 'RM_' . $record->pasien?->no_rm . '_' . now()->format('Ymd') . '.pdf';
+
+                        // Langsung download!
+                        return response()->streamDownload(
+                            fn () => print($pdf->output()),
+                            $filename
+                        );
+                    })
+                    ->openUrlInNewTab(), // Buka PDF di tab baru
             ])
             ->bulkActions([]);
     }

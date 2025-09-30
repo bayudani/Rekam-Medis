@@ -62,6 +62,8 @@ class PasienResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('no_bpjs')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
                     ->label('Tgl. Lahir')
                     ->date()
