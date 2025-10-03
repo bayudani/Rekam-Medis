@@ -1,11 +1,16 @@
 <div>
     {{-- SECTION: JUDUL --}}
-    <section class="bg-cover bg-center opacity-50 py-12 min-h-[70vh]"  style="background-image: url('{{ asset('images/Gambar2.jpg') }}');">
-        <div class="container mx-auto px-6 text-center" >
-            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-gray-800">Jadwal Praktek Dokter</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-                Informasi jadwal dokter yang praktek pada hari ini, <strong>{{ $hariIni }}, {{ \Illuminate\Support\Carbon::now()->translatedFormat('d F Y') }}</strong>.
+   <section class="relative bg-gradient-to-t from-teal-600 to-teal-800 text-white min-h-[70vh] flex items-center">
+        <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image: url('{{ asset('images/Gambar2.jpg') }}');"></div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
+                Puskesmas Bengkalis
+            </h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up">
+                Informasi jadwal dokter yang praktek pada hari ini,
             </p>
+            <div class="flex justify-center space-x-4">
+           
         </div>
     </section>
 
