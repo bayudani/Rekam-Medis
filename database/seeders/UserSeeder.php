@@ -18,6 +18,8 @@ class UserSeeder extends Seeder
         // Create Poli
         $poliUmum = Poli::create(['nama_poli' => 'Poli Umum']);
         $poliGigi = Poli::create(['nama_poli' => 'Poli Gigi & Mulut']);
+        $poliTindakan = Poli::create(['nama_poli' => 'Ruang Tindakan']); // <-- Tambah poli baru
+
         // $poliKIA = Poli::create(['nama_poli' => 'Poli KIA']);
 
         // Create Users
@@ -49,6 +51,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'dokter',
             'poli_id' => $poliGigi->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Dr. Sarah (Tindakan)',
+            'email' => 'dokter.tindakan@puskesmas.com',
+            'password' => Hash::make('password'),
+            'role' => 'dokter',
+            'poli_id' => $poliTindakan->id,
         ]);
     }
 }

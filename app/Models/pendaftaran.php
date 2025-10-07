@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pendaftaran extends Model
 {
@@ -102,5 +103,10 @@ class Pendaftaran extends Model
     public function dokter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'dokter_id');
+    }
+    // rekamMedis
+    public function rekamMedis(): HasOne
+    {
+        return $this->hasOne(RekamMedis::class);
     }
 }

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->json('penanggung_jawab_biaya')->nullable(); // Checkbox: BPJS, Umum, dll
             $table->json('tanda_kehidupan_negatif')->nullable(); // Checkbox: Denyut Nadi (-), Respirasi (-)
 
-            $table->text("riwayat_penyakit_dahulu");
+            $table->text("riwayat_penyakit_dahulu")->nullable();
             $table->boolean("trauma")->default(false);
             $table->string('kondisi')->nullable(); // Radio: Gawat Darurat, Darurat, dll
             
@@ -64,6 +64,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rekam_mediss');
+        Schema::dropIfExists('rekam_medis');
     }
 };

@@ -2,30 +2,26 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\admin\Resources\RekamMedisResource\Pages;
+use App\Filament\Admin\Resources\RekamMedisResource\Pages;
+use App\Filament\Admin\Resources\RekamMedisResource\RelationManagers;
 use App\Models\Pendaftaran;
-use App\Models\Poli;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-
 
 class RekamMedisResource extends Resource
 {
     protected static ?string $model = Pendaftaran::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
     protected static ?string $navigationLabel = 'Rekam Medis Pasien';
     protected static ?string $slug = 'rekam-medis';
     protected static ?int $navigationSort = 3;
     protected static ?string $modelLabel = 'Rekam Medis';
-
 
     public static function canViewAny(): bool
     {
@@ -38,64 +34,62 @@ class RekamMedisResource extends Resource
         return parent::getEloquentQuery()->where('poli_id', $user->poli_id);
     }
 
+    // --- INI DIA BAGIAN YANG DI-UPGRADE TOTAL ---
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Informasi Pasien')
-                        ->schema([
-                            Forms\Components\Placeholder::make('no_rm')
-                                ->label('No. RM')
-                                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->no_rm ?? '-'),
-                            Forms\Components\Placeholder::make('nama_pasien')
-                                ->label('Nama Pasien')
-                                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->nama ?? '-'),
-                            Forms\Components\Placeholder::make('no_bpjs')
-                                ->label('NO BPJS')
-                                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->no_bpjs ?? '-'),
-                            Forms\Components\Placeholder::make('jenis_kelamin')
-                                ->label('Jenis Kelamin')
-                                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->jk === 'L' ? 'Laki-laki' : 'Perempuan'),
-                            // Forms\Components\Placeholder::make('umur')
-                            //     ->label('Tgl. Lahir / Umur')
-                            //     ->content(function (?Pendaftaran $record): string {
-                            //         if (!$record || !$record->pasien?->tgl_lahir) {
-                            //             return '-';
-                            //         }
-                            //         $tgl_lahir = Carbon::parse($record->pasien->tgl_lahir);
-                            //         return $tgl_lahir->format('d F Y') . ' (' . $tgl_lahir->age . ' Thn)';
-                            //     }),
-                        ])->columns(2),
-                ])->columnSpan(1),
+            ->schema(function (?Pendaftaran $record): array {
+                // Jika data belum ada (misal saat create, meskipun disembunyikan), jangan tampilkan apa-apa
+                if (!$record) {
+                    return [];
+                }
 
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Status & Waktu Kunjungan')
-                        ->schema([
-                            Forms\Components\Select::make('status')
-                                ->options([
-                                    'Menunggu' => 'Menunggu',
-                                    'Diperiksa' => 'Diperiksa',
-                                    'Selesai' => 'Selesai'
-                                ])
-                                ->required(),
-                            Forms\Components\DateTimePicker::make('tanggal_asesmen')
-                                ->label('Waktu Asesmen')
-                                ->default(now())
-                                ->required(),
-                        ]),
-                ])->columnSpan(1),
+                // Cek nama poli dari data pendaftaran yang sedang dibuka
+                if ($record->poli?->nama_poli === 'Ruang Tindakan') {
+                    // JIKA INI PASIEN RUANG TINDAKAN:
+                    // Sembunyikan form wizard dan biarkan Relation Manager yang bekerja.
+                    // Cukup tampilkan info pasien & status.
+                    return [
+                        Forms\Components\Group::make()->schema([
+                            Forms\Components\Section::make('Informasi Pasien')
+                                ->schema(self::getSkemaInfoPasien()), // Panggil skema info pasien
+                        ])->columnSpan(1),
 
+                        Forms\Components\Group::make()->schema([
+                            Forms\Components\Section::make('Status & Waktu Kunjungan')
+                                ->schema(self::getSkemaStatusKunjungan()), // Panggil skema status
+                        ])->columnSpan(1),
+                        
+                        
+                        // Wizard disembunyikan di sini
+                    ];
+                }
 
-                Forms\Components\Wizard::make([
-                    Forms\Components\Wizard\Step::make('Asesmen Keperawatan')
-                        ->schema(self::getSkemaKeperawatan()),
-                    Forms\Components\Wizard\Step::make('Asesmen Medis')
-                        ->schema(self::getSkemaMedis()),
-                    Forms\Components\Wizard\Step::make('Tindak Lanjut')
-                        ->schema(self::getSkemaTindakLanjut()),
-                ])->columnSpanFull(),
-            ]);
+                // JIKA BUKAN PASIEN RUANG TINDAKAN (PASIEN BIASA):
+                // Tampilkan form Wizard lengkap seperti sebelumnya.
+                return [
+                    Forms\Components\Group::make()->schema([
+                        Forms\Components\Section::make('Informasi Pasien')
+                            ->schema(self::getSkemaInfoPasien()),
+                    ])->columnSpan(1),
+
+                    Forms\Components\Group::make()->schema([
+                        Forms\Components\Section::make('Status & Waktu Kunjungan')
+                            ->schema(self::getSkemaStatusKunjungan()),
+                    ])->columnSpan(1),
+
+                    Forms\Components\Wizard::make([
+                        Forms\Components\Wizard\Step::make('Asesmen Keperawatan')
+                            ->schema(self::getSkemaKeperawatan()),
+                        Forms\Components\Wizard\Step::make('Asesmen Medis')
+                            ->schema(function () use ($record) { // Dibuat dinamis di sini
+                                return self::getSkemaMedis($record);
+                            }),
+                        Forms\Components\Wizard\Step::make('Tindak Lanjut')
+                            ->schema(self::getSkemaTindakLanjut()),
+                    ])->columnSpanFull(),
+                ];
+            })->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -107,9 +101,7 @@ class RekamMedisResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Menunggu' => 'warning',
-                        'Diperiksa' => 'info',
-                        'Selesai' => 'success',
+                        'Menunggu' => 'warning', 'Diperiksa' => 'info', 'Selesai' => 'success', default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('created_at')->label('Waktu Daftar')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->label('Terakhir Diperiksa')->dateTime()->sortable(),
@@ -122,33 +114,28 @@ class RekamMedisResource extends Resource
                     ->label('Cetak PDF')
                     ->icon('heroicon-o-printer')
                     ->color('success')
+                    // Sembunyikan tombol cetak untuk Ruang Tindakan (karena templatenya belum dibuat)
+                    ->visible(fn(Pendaftaran $record) => $record->poli?->nama_poli !== 'Ruang Tindakan')
                     ->action(function (Pendaftaran $record) {
-                        // Tentukan view mana yang mau dipakai berdasarkan poli
-                        $viewName = 'pdf.umum'; // Default ke umum
+                        $viewName = 'pdf.umum';
                         if ($record->poli?->nama_poli === 'Poli Gigi & Mulut') {
                             $viewName = 'pdf.gigi';
                         }
-
-                        // Load view, kasih data, terus jadiin PDF
                         $pdf = Pdf::loadView($viewName, ['record' => $record]);
-                        
-                        // Buat nama file yang keren
                         $filename = 'RM_' . $record->pasien?->no_rm . '_' . now()->format('Ymd') . '.pdf';
-
-                        // Langsung download!
-                        return response()->streamDownload(
-                            fn () => print($pdf->output()),
-                            $filename
-                        );
+                        return response()->streamDownload(fn () => print($pdf->output()), $filename);
                     })
-                    ->openUrlInNewTab(), // Buka PDF di tab baru
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([]);
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            // Daftarkan Relation Manager di sini agar bisa dipanggil
+            RelationManagers\RekamMedisRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
@@ -159,7 +146,42 @@ class RekamMedisResource extends Resource
         ];
     }
 
-    // --- SKEMA FORM ---
+    // --- SKEMA FORM DIPISAH BIAR RAPI ---
+
+    public static function getSkemaInfoPasien(): array
+    {
+        return [
+            Forms\Components\Placeholder::make('no_rm')
+                ->label('No. RM')
+                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->no_rm ?? '-'),
+            Forms\Components\Placeholder::make('nama_pasien')
+                ->label('Nama Pasien')
+                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->nama ?? '-'),
+            Forms\Components\Placeholder::make('jenis_kelamin')
+                ->label('Jenis Kelamin')
+                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->jk === 'L' ? 'Laki-laki' : 'Perempuan'),
+            Forms\Components\Placeholder::make('umur')
+                ->label('Tgl. Lahir / Umur')
+                ->content(function (?Pendaftaran $record): string {
+                    if (!$record || !$record->pasien?->tgl_lahir) return '-';
+                    $tgl_lahir = Carbon::parse($record->pasien->tgl_lahir);
+                    return $tgl_lahir->format('d F Y') . ' (' . $tgl_lahir->age . ' Thn)';
+                }),
+        ];
+    }
+
+    public static function getSkemaStatusKunjungan(): array
+    {
+        return [
+            Forms\Components\Select::make('status')
+                ->options(['Menunggu' => 'Menunggu', 'Diperiksa' => 'Diperiksa', 'Selesai' => 'Selesai'])
+                ->required(),
+            Forms\Components\DateTimePicker::make('tanggal_asesmen')
+                ->label('Waktu Asesmen')
+                ->default(now())
+                ->required(),
+        ];
+    }
 
     public static function getSkemaKeperawatan(): array
     {
@@ -214,7 +236,6 @@ class RekamMedisResource extends Resource
                         ->schema([
                             Forms\Components\Checkbox::make('risiko_jatuh_penilaian_1')->label('Cara berjalan pasien (tidak seimbang/sempoyongan/limbung/menggunakan alat bantu)'),
                             Forms\Components\Checkbox::make('risiko_jatuh_penilaian_2')->label('Menopang saat akan duduk'),
-                            // Hasil akan di-logic-kan nanti
                         ]),
                 ]),
 
@@ -225,10 +246,11 @@ class RekamMedisResource extends Resource
                 ])->columns(1),
         ];
     }
-
-    public static function getSkemaMedis(): array
+    
+    // Penentuan skema medis sekarang menerima record
+    public static function getSkemaMedis(?Pendaftaran $record): array
     {
-        $poliNama = auth()->user()->poli?->nama_poli;
+        $poliNama = $record->poli?->nama_poli;
 
         $skema = [
             Forms\Components\Textarea::make('anamnesis_medis')->label('Anamnesis (S)'),
@@ -243,7 +265,7 @@ class RekamMedisResource extends Resource
         }
 
         $skema = array_merge($skema, [
-            Forms\Components\Textarea::make('assessment_diagnosa_medis')->label('Assessment/Diagnosa (A)')->required(),
+            Forms\Components\Textarea::make('assessment_diagnosa_medis')->label('Assessment/Diagnosa (A)'),
             Forms\Components\TextInput::make('icd_x')->label('ICD X'),
             Forms\Components\Textarea::make('rencana_terapi_medis')->label('Rencana Terapi/Planning (P)'),
         ]);

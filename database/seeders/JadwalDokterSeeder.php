@@ -17,6 +17,7 @@ class JadwalDokterSeeder extends Seeder
         // Ambil data dokter
         $dokterUmum = User::where('email', 'dokter.umum@puskesmas.com')->first();
         $dokterGigi = User::where('email', 'dokter.gigi@puskesmas.com')->first();
+        $dokterTindakan = User::where('email', 'dokter.tindakan@puskesmas.com')->first();
 
         // Jadwal untuk Dokter Umum
         if ($dokterUmum) {
@@ -47,6 +48,33 @@ class JadwalDokterSeeder extends Seeder
                 'hari' => 'Kamis',
                 'jam_mulai' => '09:00:00',
                 'jam_selesai' => '15:00:00',
+            ]);
+            JadwalDokter::create([
+                'user_id' => $dokterGigi->id,
+                'hari' => 'Jumat',
+                'jam_mulai' => '09:00:00',
+                'jam_selesai' => '15:00:00',
+            ]);
+        }
+        // Jadwal untuk Dokter Tindakan
+        if ($dokterTindakan) {
+            JadwalDokter::create([
+                'user_id' => $dokterTindakan->id,
+                'hari' => 'Senin',
+                'jam_mulai' => '15:00:00',
+                'jam_selesai' => '17:00:00',
+            ]);
+            JadwalDokter::create([
+                'user_id' => $dokterTindakan->id,
+                'hari' => 'Selasa',
+                'jam_mulai' => '15:00:00',
+                'jam_selesai' => '17:00:00',
+            ]);
+            JadwalDokter::create([
+                'user_id' => $dokterTindakan->id,
+                'hari' => 'Rabu',
+                'jam_mulai' => '15:00:00',
+                'jam_selesai' => '17:00:00',
             ]);
         }
     }
