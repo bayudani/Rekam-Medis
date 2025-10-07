@@ -18,9 +18,9 @@ class UserSeeder extends Seeder
         // Create Poli
         $poliUmum = Poli::create(['nama_poli' => 'Poli Umum']);
         $poliGigi = Poli::create(['nama_poli' => 'Poli Gigi & Mulut']);
-        $poliTindakan = Poli::create(['nama_poli' => 'Ruang Tindakan']); // <-- Tambah poli baru
+        $poliTindakan = Poli::create(['nama_poli' => 'Ruang Tindakan']); 
 
-        // $poliKIA = Poli::create(['nama_poli' => 'Poli KIA']);
+       
 
         // Create Users
         User::factory()->create([

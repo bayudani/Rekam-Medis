@@ -56,7 +56,7 @@ class JadwalDokterSeeder extends Seeder
                 'jam_selesai' => '15:00:00',
             ]);
         }
-        // Jadwal untuk Dokter Tindakan
+    
         if ($dokterTindakan) {
             JadwalDokter::create([
                 'user_id' => $dokterTindakan->id,
