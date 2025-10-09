@@ -3,8 +3,7 @@
 use App\Livewire\Actions\Logout;
 use Livewire\Volt\Component;
 
-new class extends Component
-{
+new class extends Component {
     /**
      * Log the current user out of the application.
      */
@@ -17,44 +16,86 @@ new class extends Component
 }; ?>
 
 <nav x-data="{ open: false }" class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex justify-between items-center">
-                {{-- Logo --}}
-                <a href="/" class="flex items-center space-x-2">
-                    <img src="{{ asset('images/LogoPuskesmas.png') }}" alt="Logo" class="w-8 h-8">
-                    {{-- <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a9.004 9.004 0 00-4.288 1.13M12 3a9.004 9.004 0 014.288 1.13m-8.576 2.87a9.004 9.004 0 018.576 0M7.712 12.253a9.004 9.004 0 008.576 0"></path></svg> --}}
-                    <span class="text-xl font-bold text-gray-800">Puskesmas</span>
-                </a>
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex justify-between items-center">
+            {{-- Logo --}}
+            <a href="/" class="flex items-center space-x-2">
+                <img src="{{ asset('images/LogoPuskesmas.png') }}" alt="Logo" class="w-8 h-8">
+                {{-- <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a9.004 9.004 0 00-4.288 1.13M12 3a9.004 9.004 0 014.288 1.13m-8.576 2.87a9.004 9.004 0 018.576 0M7.712 12.253a9.004 9.004 0 008.576 0"></path></svg> --}}
+                <span class="text-xl font-bold text-gray-800">Puskesmas</span>
+            </a>
 
-                {{-- Desktop Menu --}}
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-gray-600 hover:text-teal-600 font-semibold">Beranda</a>
-                    <a href="#" class="text-gray-600 hover:text-teal-600 font-semibold">Tentang Kami</a>
-                    <a href="{{ route('JadwalDokter') }}" class="text-gray-600 hover:text-teal-600 font-semibold">Jadwal Dokter</a>
-                    <a href="#kontak" class="text-gray-600 hover:text-teal-600 font-semibold">Kontak</a>
-                    <a href="#layanan" class="text-gray-600 hover:text-teal-600 font-semibold">Cara Berobat</a>
-                </div>
+            {{-- Desktop Menu --}}
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/" class="text-gray-600 hover:text-teal-600 font-semibold">Beranda</a>
+                <a href="{{ route('tentangPuskesmas') }}"
+                    class="text-gray-600 hover:text-teal-600 font-semibold">Tentang Kami</a>
+                <a href="{{ route('JadwalDokter') }}" class="text-gray-600 hover:text-teal-600 font-semibold">Jadwal
+                    Dokter</a>
+                <a href="{{ route('kontak') }}" class="text-gray-600 hover:text-teal-600 font-semibold">Kontak</a>
+                <a href="{{ route('CaraBerobat') }}" class="text-gray-600 hover:text-teal-600 font-semibold">Cara
+                    Berobat</a>
 
-                {{-- Mobile Menu Button --}}
-                <div class="md:hidden">
-                    <button @click="open = !open" class="text-gray-600 hover:text-teal-600 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path :class="{'hidden': open, 'block': !open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                            <path :class="{'block': open, 'hidden': !open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
+                @auth
+                    {{-- Jika sudah login, tampilkan tombol Dashboard --}}
+                    <a href="/admin"
+                        class="bg-teal-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-teal-700 transform hover:-translate-y-0.5 transition-all duration-300">
+                        Dashboard
+                    </a>
+                    <button wire:click="logout" class="text-gray-600 hover:text-red-600 font-semibold transition-colors">
+                        Logout
                     </button>
-                </div>
+                @else
+                    {{-- Jika belum login, tampilkan tombol Login --}}
+                    <a href="{{ route('login') }}"
+                        class="border border-teal-600 text-teal-600 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-teal-50 transform hover:-translate-y-0.5 transition-all duration-300">
+                        Login
+                    </a>
+                @endauth
             </div>
 
-            {{-- Mobile Menu --}}
-            <div x-show="open" @click.away="open = false" class="md:hidden mt-4" x-transition>
-                <a href="/" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Beranda</a>
-                <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Tentang Kami</a>
-                <a href="{{ route('JadwalDokter') }}" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Jadwal Dokter</a>
-                <a href="#kontak" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Kontak</a>
-                <a href="#layanan" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Cara Berobat</a>
+            {{-- Mobile Menu Button --}}
+            <div class="md:hidden">
+                <button @click="open = !open" class="text-gray-600 hover:text-teal-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path :class="{ 'hidden': open, 'block': !open }" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        <path :class="{ 'block': open, 'hidden': !open }" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-    </nav>
-</div>
 
+        {{-- Mobile Menu --}}
+        <div x-show="open" @click.away="open = false" class="md:hidden mt-4" x-transition>
+            <a href="/" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Beranda</a>
+            <a href="{{ route('tentangPuskesmas') }}"
+                class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Tentang Kami</a>
+            <a href="{{ route('JadwalDokter') }}"
+                class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Jadwal Dokter</a>
+            <a href="{{ route('kontak') }}"
+                class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Kontak</a>
+            <a href="{{ route('CaraBerobat') }}"
+                class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Cara Berobat</a>
+
+            @auth
+                <a href="/admin"
+                    class="block py-2 px-4 text-sm text-white bg-teal-600 hover:bg-teal-700 rounded text-center font-semibold">
+                    Dashboard
+                </a>
+                <button wire:click="logout"
+                    class="w-full block py-2 px-4 text-sm text-red-600 border border-red-500 hover:bg-red-50 rounded text-center font-semibold">
+                    Logout
+                </button>
+            @else
+                <a href="{{ route('login') }}"
+                    class="block py-2 px-4 text-sm text-gray-800 bg-gray-200 hover:bg-gray-300 rounded text-center font-semibold">
+                    Login
+                </a>
+            @endauth
+        </div>
+    </div>
+</nav>
+</div>

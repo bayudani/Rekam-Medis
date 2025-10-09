@@ -17,6 +17,10 @@ Route::view('tentang-puskesmas', 'tentangPuskesmas')
 
 Route::view('jadwal-dokter', 'JadwalDokter')
     ->name('JadwalDokter');
+    
+Route::view('cara-berobat', 'CaraBerobat')
+    ->name('CaraBerobat');
 
-
+Route::view('kontak', 'kontak')
+    ->name('kontak');
 require __DIR__.'/auth.php';
