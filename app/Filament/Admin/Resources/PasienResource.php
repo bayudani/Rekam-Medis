@@ -23,8 +23,15 @@ class PasienResource extends Resource
 
     public static function canCreate(): bool
     {
-        // Hanya user dengan role 'loket' yang bisa membuat data baru
-        return auth()->user()->role === 'loket';
+        $user = auth()->user();
+
+
+        if (!$user) {
+            return false;
+        }
+
+        // Kalo ada yang login, baru cek rolenya.
+        return $user->role === 'loket';
     }
 
     public static function form(Form $form): Form

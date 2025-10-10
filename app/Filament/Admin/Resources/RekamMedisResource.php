@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Filament\Resources\Components\Tab;
 
 class RekamMedisResource extends Resource
 {
@@ -25,8 +26,18 @@ class RekamMedisResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->role === 'dokter';
+        $user = auth()->user();
+
+        // Cek dulu, ada yang login nggak?
+        // Kalo nggak ada, langsung balikin false (jangan tampilkan menu).
+        if (!$user) {
+            return false;
+        }
+
+        // Kalo ada yang login, baru cek rolenya.
+        return $user->role === 'dokter';
     }
+    
 
     public static function getEloquentQuery(): Builder
     {
@@ -107,7 +118,15 @@ class RekamMedisResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')->label('Terakhir Diperiksa')->dateTime()->sortable(),
             ])
             ->defaultSort('updated_at', 'desc')
-            ->filters([])
+            ->filters([
+                // filter by status
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'Menunggu' => 'Menunggu',
+                        'Diperiksa' => 'Diperiksa',
+                        'Selesai' => 'Selesai',
+                    ]),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make()->label('Periksa'),
                 Tables\Actions\Action::make('cetakPdf')
@@ -130,6 +149,7 @@ class RekamMedisResource extends Resource
             ->bulkActions([]);
     }
 
+    
     public static function getRelations(): array
     {
         return [

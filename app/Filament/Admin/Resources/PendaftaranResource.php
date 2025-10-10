@@ -36,15 +36,17 @@ class PendaftaranResource extends Resource
         return auth()->user()->role === 'loket';
     }
 
-    /**
-     * Kontrol siapa yang bisa melihat menu ini di sidebar.
-     * Hanya 'loket' dan 'rekam_medis' yang bisa melihat. Dokter tidak bisa.
-     */
     public static function canViewAny(): bool
     {
         $user = auth()->user();
-        return $user->role === 'loket' || $user->role === 'rekam_medis';
+
+        if (!$user) {
+            return false;
+        }
+
+        return $user->role === 'rekam_medis' || $user->role === 'loket';
     }
+    
 
     /**
      * Menambahkan badge notifikasi jumlah pasien yang sedang menunggu.
@@ -159,7 +161,21 @@ class PendaftaranResource extends Resource
             ])
             ->defaultSort('created_at', 'desc') // Tampilkan yang terbaru di atas
             ->filters([
-                //
+                // filter by status
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'Menunggu' => 'Menunggu',
+                        'Diperiksa' => 'Diperiksa',
+                        'Selesai' => 'Selesai',
+                    ]),
+                // filter by poli
+                Tables\Filters\SelectFilter::make('poli_id')
+                    ->label('Poli')
+                    ->options(Poli::all()->pluck('nama_poli', 'id')),
+                // filter by dokter
+                Tables\Filters\SelectFilter::make('dokter_id')
+                    ->label('Dokter')
+                    ->options(User::where('role', 'dokter')->pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

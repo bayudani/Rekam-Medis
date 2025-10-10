@@ -26,8 +26,17 @@ class PoliResource extends Resource
     public static function canViewAny(): bool
     {
         $user = auth()->user();
+
+        // Cek dulu, ada yang login nggak?
+        // Kalo nggak ada, langsung balikin false (jangan tampilkan menu).
+        if (!$user) {
+            return false;
+        }
+
+        // Kalo ada yang login, baru cek rolenya.
         return $user->role === 'rekam_medis';
     }
+    
     public static function form(Form $form): Form
     {
         return $form
