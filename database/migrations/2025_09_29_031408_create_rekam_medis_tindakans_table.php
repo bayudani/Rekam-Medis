@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('rekam_medis', function (Blueprint $table) {
+        Schema::create('rekam_medis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pendaftaran_id')->unique()->constrained('pendaftarans')->onDelete('cascade');
 
@@ -28,17 +28,17 @@ return new class extends Migration
             $table->text("riwayat_penyakit_dahulu")->nullable();
             $table->boolean("trauma")->default(false);
             $table->string('kondisi')->nullable(); // Radio: Gawat Darurat, Darurat, dll
-            
+
             // Initial Assessment
             $table->string('pupil')->nullable(); // isokhor / anisokhor
             $table->json('pemeriksaan_awal')->nullable(); // Checkbox: Airway & C, Breathing, dll
             $table->string('gcs_awal')->nullable();
             $table->string('refleks_cahaya')->nullable();
-            
+
             // Triase Primer
             $table->json('resusitasi')->nullable(); // Checkbox: Sumbatan, Henti Napas, dll
             $table->json('emergency')->nullable(); // Checkbox: Bebas, Ancaman, dll
-            
+
             // Triase Sekunder
             $table->json('urgent')->nullable(); // Checkbox: Normal, Mengi, Takipnoe, dll
             $table->json('non_urgent')->nullable(); // Checkbox: Normal, Nadi Kuat, dll

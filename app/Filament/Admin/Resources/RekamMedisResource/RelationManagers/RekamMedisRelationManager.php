@@ -7,6 +7,8 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Get;
 
 class RekamMedisRelationManager extends RelationManager
 {
@@ -14,7 +16,13 @@ class RekamMedisRelationManager extends RelationManager
 
     protected static ?string $title = 'Formulir Triase Pasien Gawat Darurat';
 
-    
+    // "Satpam" buat ngecek, ini cuma boleh muncul di Ruang Tindakan
+    public static function canViewForRecord(Model $ownerRecord, string $pageName): bool
+    {
+        return $ownerRecord->poli?->nama_poli === 'Ruang Tindakan';
+    }
+
+    // Definisi form untuk create dan edit
     public function form(Form $form): Form
     {
         return $form
@@ -50,7 +58,7 @@ class RekamMedisRelationManager extends RelationManager
                                 'Pupil dilatasi maksimal' => 'Pupil dilatasi maksimal',
                             ])->columnSpanFull(),
                     ]),
-                
+
                 Forms\Components\Section::make('Kondisi Awal Pasien')
                     ->columns(3)
                     ->schema([
@@ -61,7 +69,7 @@ class RekamMedisRelationManager extends RelationManager
                             'Darurat' => 'Darurat',
                             'Tidak Gawat Tidak Darurat' => 'Tidak Gawat Tidak Darurat',
                             'Meninggal' => 'Meninggal',
-                        ])->columnSpanFull(),
+                        ])->columnSpanFull()->required(), // Ditambahin required biar wajib diisi
                     ]),
 
                 Forms\Components\Section::make('Initial Assessment & Triase Primer')
@@ -90,28 +98,16 @@ class RekamMedisRelationManager extends RelationManager
                                     ->options(['Bebas', 'Ancaman', 'Takipnoe (>32x/mnt)', 'Mengi', 'Nadi teraba lemah', 'Bradikardi', 'Takikardi (120-150x/mnt)', 'Pucat', 'Akral dingin', 'CRT > 2 detik', 'GCS < 9', 'Gelisah', 'Nyeri Dada']),
                             ]),
                     ]),
-                
+
                 Forms\Components\Section::make('Triase Sekunder')
                     ->columns(3)
                     ->schema([
-                         Forms\Components\Fieldset::make('Urgent')
-                            ->schema([
-                                Forms\Components\CheckboxList::make('urgent')
-                                    ->label(false) // Sembunyikan label karena sudah ada di Fieldset
-                                    ->options(['Normal', 'Mengi', 'Takipnoe', 'Nadi Kuat', 'Takikardi', 'GCS > 12', 'Apatis', 'Somnolen', '38-39.9 °C']),
-                            ]),
+                        Forms\Components\Fieldset::make('Urgent')
+                            ->schema([Forms\Components\CheckboxList::make('urgent')->label(false)->options(['Normal', 'Mengi', 'Takipnoe', 'Nadi Kuat', 'Takikardi', 'GCS > 12', 'Apatis', 'Somnolen', '38-39.9 °C']),]),
                         Forms\Components\Fieldset::make('Non Urgent')
-                            ->schema([
-                                Forms\Components\CheckboxList::make('non_urgent')
-                                     ->label(false)
-                                    ->options(['Normal', 'Nadi Kuat', 'Frek Normal', 'GCS 15']),
-                            ]),
+                            ->schema([Forms\Components\CheckboxList::make('non_urgent')->label(false)->options(['Normal', 'Nadi Kuat', 'Frek Normal', 'GCS 15']),]),
                         Forms\Components\Fieldset::make('False Emergency')
-                            ->schema([
-                                Forms\Components\CheckboxList::make('false_emergency')
-                                     ->label(false)
-                                    ->options(['Normal', 'Nadi Kuat', 'Frek Normal', 'GCS 15', '< 38 °C']),
-                            ]),
+                            ->schema([Forms\Components\CheckboxList::make('false_emergency')->label(false)->options(['Normal', 'Nadi Kuat', 'Frek Normal', 'GCS 15', '< 38 °C']),]),
                     ]),
 
                 Forms\Components\Section::make('Tanda Vital & Keadaan Umum')
@@ -128,43 +124,55 @@ class RekamMedisRelationManager extends RelationManager
                                 Forms\Components\TextInput::make('bb')->label('BB')->suffix('kg'),
                                 Forms\Components\TextInput::make('tb')->label('TB')->suffix('cm'),
                             ]),
-                        Forms\Components\Toggle::make('ada_keluhan_nyeri')
-                            ->label('Apakah terdapat keluhan nyeri?')
-                            ->live()
-                            ->inline(false),
-                        Forms\Components\TextInput::make('skor_nyeri')
-                            ->label('Bila Ya, berapa skala nyerinya?')
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(10)
-                            ->visible(fn (Forms\Get $get) => $get('ada_keluhan_nyeri')),
+                        Forms\Components\Toggle::make('ada_keluhan_nyeri')->label('Apakah terdapat keluhan nyeri?')->live()->inline(false),
+                        Forms\Components\TextInput::make('skor_nyeri')->label('Bila Ya, berapa skala nyerinya?')->numeric()->minValue(0)->maxValue(10)->visible(fn (Get $get) => $get('ada_keluhan_nyeri')),
                     ]),
-
             ]);
     }
 
+    // Definisi tabel untuk nampilin data yang udah ada
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('pendaftaran_id')
+            // --- BAGIAN INI DIPERBAIKI ---
             ->columns([
-                // Tidak perlu kolom karena ini form 1-to-1
+                // Kolom ditambahin biar data yang udah diinput keliatan
+                Tables\Columns\TextColumn::make('kondisi')
+                    ->label('Kondisi Pasien')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'Gawat Darurat' => 'danger',
+                        'Darurat' => 'warning',
+                        'Tidak Gawat Tidak Darurat' => 'success',
+                        'Meninggal' => 'gray',
+                        default => 'primary',
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Waktu Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Bisa di-hide kalo mau
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                // Cek dulu apakah sudah ada datanya atau belum
+                // Action-nya disederhanain, cukup gini aja udah otomatis manggil form() di atas
                 Tables\Actions\CreateAction::make()
-                    ->label('Buat Rekam Medis Tindakan')
-                    ->visible(fn (): bool => !$this->getOwnerRecord()->rekamMedis()->exists()),
+                    ->label('Tambah Formulir Baru'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // Sebaiknya tidak ada delete untuk rekam medis
+                Tables\Actions\DeleteAction::make(),
             ])
-            ->emptyStateHeading('Belum Ada Rekam Medis')
-            ->emptyStateDescription('Buat rekam medis untuk pendaftaran ini.');
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateHeading('Belum Ada Formulir Triase')
+            ->emptyStateDescription('Buat formulir baru untuk pendaftaran ini.');
     }
 }
-

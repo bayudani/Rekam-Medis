@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\RekamMedisResource\Pages;
 use App\Filament\Admin\Resources\RekamMedisResource\RelationManagers;
+
 use App\Models\Pendaftaran;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
@@ -28,13 +29,9 @@ class RekamMedisResource extends Resource
     {
         $user = auth()->user();
 
-        // Cek dulu, ada yang login nggak?
-        // Kalo nggak ada, langsung balikin false (jangan tampilkan menu).
         if (!$user) {
             return false;
         }
-
-        // Kalo ada yang login, baru cek rolenya.
         return $user->role === 'dokter';
     }
     
@@ -155,6 +152,7 @@ class RekamMedisResource extends Resource
         return [
             // Daftarkan Relation Manager di sini agar bisa dipanggil
             RelationManagers\RekamMedisRelationManager::class,
+            RelationManagers\CatatanPerkembanganRelationManager::class,
         ];
     }
 
