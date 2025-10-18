@@ -45,6 +45,7 @@ class UserSeeder extends Seeder
             'poli_id' => $poliUmum->id,
         ]);
 
+
         User::factory()->create([
             'name' => 'Drg. Siti (Gigi)',
             'email' => 'dokter.gigi@puskesmas.com',
@@ -59,6 +60,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'dokter',
             'poli_id' => $poliTindakan->id,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Apoteker Ani',
+            'email' => 'apoteker@puskesmas.com',
+            'password' => Hash::make('password'),
+            'role' => 'apoteker',
         ]);
     }
 }

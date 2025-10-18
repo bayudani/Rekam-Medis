@@ -15,6 +15,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Components\Tab;
+use Filament\Forms\Set; // <-- Tambahin ini
+use Filament\Forms\Get; // <-- Tambahin ini
+use App\Forms\Components\ontodgram;
+
 
 class RekamMedisResource extends Resource
 {
@@ -252,8 +256,21 @@ class RekamMedisResource extends Resource
                     Forms\Components\Radio::make('status_fungsional')->options(['Mandiri' => 'Mandiri', 'Perlu Bantuan' => 'Perlu Bantuan', 'Ketergantungan total' => 'Ketergantungan total']),
                     Forms\Components\Fieldset::make('Risiko Jatuh')
                         ->schema([
-                            Forms\Components\Checkbox::make('risiko_jatuh_penilaian_1')->label('Cara berjalan pasien (tidak seimbang/sempoyongan/limbung/menggunakan alat bantu)'),
-                            Forms\Components\Checkbox::make('risiko_jatuh_penilaian_2')->label('Menopang saat akan duduk'),
+                            Forms\Components\Checkbox::make('risiko_jatuh_penilaian_1')
+                                ->label('Cara berjalan pasien (tidak seimbang/sempoyongan/limbung/menggunakan alat bantu)')
+                                ->live() // <-- Bikin jadi interaktif
+                                ->afterStateUpdated(fn (Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
+
+                            Forms\Components\Checkbox::make('risiko_jatuh_penilaian_2')
+                                ->label('Menopang saat akan duduk')
+                                ->live() // <-- Bikin jadi interaktif
+                                ->afterStateUpdated(fn (Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
+                            
+                            // Field untuk nampilin hasilnya, dibikin disabled
+                            Forms\Components\TextInput::make('risiko_jatuh_hasil')
+                                ->label('Hasil Penilaian')
+                                ->disabled()
+                                ->dehydrated(),
                         ]),
                 ]),
 
@@ -275,7 +292,7 @@ class RekamMedisResource extends Resource
         ];
 
         if ($poliNama === 'Poli Gigi & Mulut') {
-            $skema[] = Forms\Components\Textarea::make('odontogram')->label('Odontogram (O)');
+            $skema[] =  ontodgram::make('odontogram');
         } else {
             $skema[] = Forms\Components\Textarea::make('pemeriksaan_fisik_medis')->label('Pemeriksaan Fisik (O)');
             $skema[] = Forms\Components\Textarea::make('pemeriksaan_penunjang_medis')->label('Pemeriksaan Penunjang');
@@ -301,6 +318,27 @@ class RekamMedisResource extends Resource
                 ->label('Rujuk Eksternal')
                 ->options(['RSUD Bengkalis' => 'RSUD Bengkalis']),
         ];
+    }
+
+    public static function hitungRisikoJatuh(Set $set, Get $get): void
+    {
+        $skor = 0;
+        if ($get('risiko_jatuh_penilaian_1')) {
+            $skor++;
+        }
+        if ($get('risiko_jatuh_penilaian_2')) {
+            $skor++;
+        }
+
+        $hasil = 'Tidak Berisiko';
+        if ($skor === 1) {
+            $hasil = 'Risiko Rendah';
+        } elseif ($skor === 2) {
+            $hasil = 'Risiko Tinggi';
+        }
+
+        // Update isi field 'risiko_jatuh_hasil'
+        $set('risiko_jatuh_hasil', $hasil);
     }
 }
 

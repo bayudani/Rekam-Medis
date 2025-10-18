@@ -301,179 +301,224 @@
                 Rokok</span>
             <span class="checkbox-item"><span class="checkbox">{{ in_array('Alkohol', $kebiasaan) ? 'X' : '' }}</span>
                 Alkohol</span>
-            <span class="checkbox-item"><span class="checkbox">{{ in_array('Obat Tidur', $kebiasaan) ? 'X' : '' }}</span>
+            <span class="checkbox-item"><span
+                    class="checkbox">{{ in_array('Obat Tidur', $kebiasaan) ? 'X' : '' }}</span>
                 Obat Tidur</span>
             <span class="checkbox-item"><span class="checkbox">{{ in_array('Olahraga', $kebiasaan) ? 'X' : '' }}</span>
                 Olahraga</span>
             <b>Lain-lain:</b> {{ $record->kebiasaan_lainnya ?? '-' }}
 
-        <div class="field-group">
-            <b>Alergi:</b>
-            <div class="checkbox-container">
-                <span class="checkbox-item"><span class="checkbox">{{ !$record->ada_alergi ? 'X' : '' }}</span>
-                    Tidak</span>
-                <span class="checkbox-item"><span class="checkbox">{{ $record->ada_alergi ? 'X' : '' }}</span> Ya,
-                    jelaskan: {{ $record->alergi_keterangan ?? '-' }}</span>
+            <div class="field-group">
+                <b>Alergi:</b>
+                <div class="checkbox-container">
+                    <span class="checkbox-item"><span class="checkbox">{{ !$record->ada_alergi ? 'X' : '' }}</span>
+                        Tidak</span>
+                    <span class="checkbox-item"><span class="checkbox">{{ $record->ada_alergi ? 'X' : '' }}</span> Ya,
+                        jelaskan: {{ $record->alergi_keterangan ?? '-' }}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="field-group">
-            <b>Status Psikologis:</b>
-            <div class="checkbox-container">
-                @php $psikologis = $record->status_psikologis ?? []; @endphp
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Tenang', $psikologis) ? 'X' : '' }}</span> Tenang</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Cemas', $psikologis) ? 'X' : '' }}</span> Cemas</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Takut', $psikologis) ? 'X' : '' }}</span> Takut</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Marah', $psikologis) ? 'X' : '' }}</span> Marah</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Sedih', $psikologis) ? 'X' : '' }}</span> Sedih</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Cenderung Bunuh Diri', $psikologis) ? 'X' : '' }}</span>
-                    Cenderung Bunuh Diri</span>
+            <div class="field-group">
+                <b>Status Psikologis:</b>
+                <div class="checkbox-container">
+                    @php $psikologis = $record->status_psikologis ?? []; @endphp
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Tenang', $psikologis) ? 'X' : '' }}</span> Tenang</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Cemas', $psikologis) ? 'X' : '' }}</span> Cemas</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Takut', $psikologis) ? 'X' : '' }}</span> Takut</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Marah', $psikologis) ? 'X' : '' }}</span> Marah</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Sedih', $psikologis) ? 'X' : '' }}</span> Sedih</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Cenderung Bunuh Diri', $psikologis) ? 'X' : '' }}</span>
+                        Cenderung Bunuh Diri</span>
+                </div>
             </div>
-        </div>
 
-        <div class="field-group"><b>O:</b>
-            <div class="textarea-content">{!! nl2br(e($record->o_keperawatan ?? '-')) !!}</div>
-        </div>
-
-        <b>Tanda-Tanda Vital:</b>
-        <table class="full-width" style="border: none;">
-            <tr>
-                <td style="border: none;">TD: {{ $record->td ?? '-' }} mmHg</td>
-                <td style="border: none;">RR: {{ $record->rr ?? '-' }} x/mnt</td>
-                <td style="border: none;">HR: {{ $record->hr ?? '-' }} x/mnt</td>
-                <td style="border: none;">T: {{ $record->t ?? '-' }} °C</td>
-            </tr>
-            <tr>
-                <td style="border: none;">TB: {{ $record->tb ?? '-' }} cm</td>
-                <td style="border: none;">BB: {{ $record->bb ?? '-' }} kg</td>
-                <td style="border: none;">IMT: {{ $record->imt ?? '-' }}</td>
-                <td style="border: none;">SpO₂: {{ $record->spo2 ?? '-' }} %</td>
-            </tr>
-        </table>
-
-        <div class="field-group">
-            <b>Skala Nyeri:</b>
-            <div class="checkbox-container">
-                <span class="checkbox-item"><span class="checkbox">{{ !$record->skala_nyeri ? 'X' : '' }}</span>
-                    Tidak</span>
-                <span class="checkbox-item"><span class="checkbox">{{ $record->skala_nyeri ? 'X' : '' }}</span> Ya,
-                    Skor: {{ $record->skor_nyeri ?? '-' }}</span>
+            <div class="field-group"><b>O:</b>
+                <div class="textarea-content">{!! nl2br(e($record->o_keperawatan ?? '-')) !!}</div>
             </div>
-        </div>
-        <div class="field-group">
-            <b>Status Fungsional:</b>
-            <div class="checkbox-container">
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ $record->status_fungsional == 'Mandiri' ? 'X' : '' }}</span>
-                    Mandiri</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ $record->status_fungsional == 'Perlu Bantuan' ? 'X' : '' }}</span> Perlu
-                    Bantuan</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ $record->status_fungsional == 'Ketergantungan Total' ? 'X' : '' }}</span>
-                    Ketergantungan Total</span>
-            </div>
-        </div>
 
-        <b>Risiko Jatuh:</b>
-        <table class="full-width">
-            <thead>
+            <b>Tanda-Tanda Vital:</b>
+            <table class="full-width" style="border: none;">
                 <tr>
-                    <th>No</th>
-                    <th>Penilaian</th>
-                    <th>Ya</th>
-                    <th>Tidak</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td>Cara berjalan pasien (Tidak seimbang/sempoyongan/limbung)</td>
-                    <td style="text-align: center;">{{ $record->risiko_jatuh_penilaian_1 ? 'V' : '' }}</td>
-                    <td style="text-align: center;">{{ !$record->risiko_jatuh_penilaian_1 ? 'V' : '' }}</td>
+                    <td style="border: none;">TD: {{ $record->td ?? '-' }} mmHg</td>
+                    <td style="border: none;">RR: {{ $record->rr ?? '-' }} x/mnt</td>
+                    <td style="border: none;">HR: {{ $record->hr ?? '-' }} x/mnt</td>
+                    <td style="border: none;">T: {{ $record->t ?? '-' }} °C</td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;">2</td>
-                    <td>Menopang saat akan duduk</td>
-                    <td style="text-align: center;">{{ $record->risiko_jatuh_penilaian_2 ? 'V' : '' }}</td>
-                    <td style="text-align: center;">{{ !$record->risiko_jatuh_penilaian_2 ? 'V' : '' }}</td>
+                    <td style="border: none;">TB: {{ $record->tb ?? '-' }} cm</td>
+                    <td style="border: none;">BB: {{ $record->bb ?? '-' }} kg</td>
+                    <td style="border: none;">IMT: {{ $record->imt ?? '-' }}</td>
+                    <td style="border: none;">SpO₂: {{ $record->spo2 ?? '-' }} %</td>
                 </tr>
-            </tbody>
-        </table>
-        <div style="margin-top: 5px;"><b>Hasil:</b> {{ $record->risiko_jatuh_hasil ?? '-' }}</div>
+            </table>
 
-        <div class="field-group" style="margin-top: 10px;"><b>A:</b>
-            <div class="textarea-content">{!! nl2br(e($record->a_keperawatan ?? '-')) !!}</div>
-        </div>
-        <div class="field-group"><b>P:</b>
-            <div class="textarea-content">{!! nl2br(e($record->p_keperawatan ?? '-')) !!}</div>
-        </div>
+            <div class="field-group">
+                <b>Skala Nyeri:</b>
+                <div class="checkbox-container">
+                    <span class="checkbox-item"><span class="checkbox">{{ !$record->skala_nyeri ? 'X' : '' }}</span>
+                        Tidak</span>
+                    <span class="checkbox-item"><span class="checkbox">{{ $record->skala_nyeri ? 'X' : '' }}</span>
+                        Ya,
+                        Skor: {{ $record->skor_nyeri ?? '-' }}</span>
+                </div>
+            </div>
+            <div class="field-group">
+                <b>Status Fungsional:</b>
+                <div class="checkbox-container">
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ $record->status_fungsional == 'Mandiri' ? 'X' : '' }}</span>
+                        Mandiri</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ $record->status_fungsional == 'Perlu Bantuan' ? 'X' : '' }}</span>
+                        Perlu
+                        Bantuan</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ $record->status_fungsional == 'Ketergantungan Total' ? 'X' : '' }}</span>
+                        Ketergantungan Total</span>
+                </div>
+            </div>
 
-        <hr> <!-- Pemisah antar bagian -->
-        <div class="section-title">ASESMEN MEDIS</div>
-        <div class="field-group"><b>Anamnesis (S):</b>
-            <div class="textarea-content">{!! nl2br(e($record->anamnesis_medis ?? '-')) !!}</div>
-        </div>
-        <div class="field-group"><b>Objektif (O) Odontogram:</b>
-            <div class="textarea-content">{{ $record->odontogram ? implode(', ', $record->odontogram) : '-' }}</div>
-        </div>
-        <div class="field-group"><b>Assessment/Diagnosa (A):</b>
-            <div class="textarea-content">{!! nl2br(e($record->assessment_diagnosa_medis ?? '-')) !!}</div>
-        </div>
-        <div class="field-group"><b>ICD X:</b> {{ $record->icd_x ?? '-' }}</div>
-        <div class="field-group"><b>Rencana Terapi/Planning (P):</b>
-            <div class="textarea-content">{!! nl2br(e($record->rencana_terapi_medis ?? '-')) !!}</div>
-        </div>
+            <b>Risiko Jatuh:</b>
+            <table class="full-width">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th>Penilaian</th>
+                        <th width="10%">Ya</th>
+                        <th width="10%">Tidak</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">1</td>
+                        <td>Cara berjalan pasien (Tidak seimbang/sempoyongan/limbung) / Jalan menggunakan alat bantu
+                        </td>
+                        <td style="text-align: center;">{{ $record->risiko_jatuh_penilaian_1 ? 'V' : '' }}</td>
+                        <td style="text-align: center;">{{ !$record->risiko_jatuh_penilaian_1 ? 'V' : '' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2</td>
+                        <td>Menopang saat akan duduk</td>
+                        <td style="text-align: center;">{{ $record->risiko_jatuh_penilaian_2 ? 'V' : '' }}</td>
+                        <td style="text-align: center;">{{ !$record->risiko_jatuh_penilaian_2 ? 'V' : '' }}</td>
 
-        <hr> <!-- Pemisah antar bagian -->
-        <div class="section-title">RENCANA TINDAK LANJUT</div>
-        <div class="field-group">
-            <b>Rujuk Internal:</b>
-            <div class="checkbox-container">
-                @php $rujuk_internal = $record->rujuk_internal ?? []; @endphp
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Gizi', $rujuk_internal) ? 'X' : '' }}</span> Gizi</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Gigi', $rujuk_internal) ? 'X' : '' }}</span> Gigi</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('R. Tindakan', $rujuk_internal) ? 'X' : '' }}</span> R.
-                    Tindakan</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('VCT/IMS', $rujuk_internal) ? 'X' : '' }}</span> VCT/IMS</span>
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('Lain-lain', $rujuk_internal) ? 'X' : '' }}</span>
-                    Lain-lain</span>
-            </div>
-        </div>
-        <div class="field-group">
-            <b>Rujuk Eksternal:</b>
-            <div class="checkbox-container">
-                @php $rujuk_eksternal = $record->rujuk_eksternal ?? []; @endphp
-                <span class="checkbox-item"><span
-                        class="checkbox">{{ in_array('RSUD Bengkalis', $rujuk_eksternal) ? 'X' : '' }}</span> RSUD
-                    Bengkalis</span>
-            </div>
-        </div>
+                    </tr>
+                </tbody>
+            </table>
 
-        <div class="signature-box">
-            <div class="signer">
-                Dokter Gigi Pemeriksa
-                <div class="signature-space"></div>
-                ( {{ $record->dokter?->name ?? '____________________' }} )
+            <table class="full-width" style="margin-top: 5px;">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th>Hasil Penilaian</th>
+                        <th colspan="2">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">1</td>
+                        <td><b>TIDAK BERISIKO</b> <br> <small>(tidak ditemukan no 1 & 2)</small></td>
+                        <td>Tidak ada tindakan</td>
+                        {{-- <td width="25%" style="text-align: center;"> --}}
+                        <td style="text-align: center;">
+                            {{ $record->risiko_jatuh_hasil == 'Tidak Berisiko' ? 'V' : '' }}</td>
+                        {{-- </td> --}}
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2</td>
+                        <td><b>RISIKO RENDAH</b> <br> <small>(ditemukan salah satu no 1 & 2)</small></td>
+                        <td>Edukasi</td>
+                        {{-- <td style="text-align: center;"> --}}
+                        <td style="text-align: center;">
+                            {{ $record->risiko_jatuh_hasil == 'Risiko Rendah' ? 'V' : '' }}</td>
+                        {{-- </td> --}}
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">3</td>
+                        <td><b>RISIKO TINGGI</b> <br> <small>(ditemukan no 1 & 2)</small></td>
+                        <td>Pemantauan</td>
+                        {{-- <td style="text-align: center;"> --}}
+                        <td style="text-align: center;">
+                            {{ $record->risiko_jatuh_hasil == 'Risiko Tinggi' ? 'V' : '' }}</td>
+                        {{-- </td> --}}
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="field-group" style="margin-top: 10px;"><b>A:</b>
+                <div class="textarea-content">{!! nl2br(e($record->a_keperawatan ?? '-')) !!}</div>
             </div>
-            <div class="signer" style="float: right;">
-                (Nama dan TTD Perawat)
-                <div class="signature-space"></div>
-                ( ____________________ )
+            <div class="field-group"><b>P:</b>
+                <div class="textarea-content">{!! nl2br(e($record->p_keperawatan ?? '-')) !!}</div>
             </div>
-        </div>
-    </div> <!-- End of main-container -->
+
+            <hr> <!-- Pemisah antar bagian -->
+            <div class="section-title">ASESMEN MEDIS</div>
+            <div class="field-group"><b>Anamnesis (S):</b>
+                <div class="textarea-content">{!! nl2br(e($record->anamnesis_medis ?? '-')) !!}</div>
+            </div>
+            <div class="field-group"><b>Objektif (O) Odontogram:</b>
+                <div class="textarea-content">{{ $record->odontogram ? implode(', ', $record->odontogram) : '-' }}
+                </div>
+            </div>
+            <div class="field-group"><b>Assessment/Diagnosa (A):</b>
+                <div class="textarea-content">{!! nl2br(e($record->assessment_diagnosa_medis ?? '-')) !!}</div>
+            </div>
+            <div class="field-group"><b>ICD X:</b> {{ $record->icd_x ?? '-' }}</div>
+            <div class="field-group"><b>Rencana Terapi/Planning (P):</b>
+                <div class="textarea-content">{!! nl2br(e($record->rencana_terapi_medis ?? '-')) !!}</div>
+            </div>
+
+            <hr> <!-- Pemisah antar bagian -->
+            <div class="section-title">RENCANA TINDAK LANJUT</div>
+            <div class="field-group">
+                <b>Rujuk Internal:</b>
+                <div class="checkbox-container">
+                    @php $rujuk_internal = $record->rujuk_internal ?? []; @endphp
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Gizi', $rujuk_internal) ? 'X' : '' }}</span> Gizi</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Gigi', $rujuk_internal) ? 'X' : '' }}</span> Gigi</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('R. Tindakan', $rujuk_internal) ? 'X' : '' }}</span> R.
+                        Tindakan</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('VCT/IMS', $rujuk_internal) ? 'X' : '' }}</span>
+                        VCT/IMS</span>
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('Lain-lain', $rujuk_internal) ? 'X' : '' }}</span>
+                        Lain-lain</span>
+                </div>
+            </div>
+            <div class="field-group">
+                <b>Rujuk Eksternal:</b>
+                <div class="checkbox-container">
+                    @php $rujuk_eksternal = $record->rujuk_eksternal ?? []; @endphp
+                    <span class="checkbox-item"><span
+                            class="checkbox">{{ in_array('RSUD Bengkalis', $rujuk_eksternal) ? 'X' : '' }}</span> RSUD
+                        Bengkalis</span>
+                </div>
+            </div>
+
+            <div class="signature-box">
+                <div class="signer">
+                    Dokter Gigi Pemeriksa
+                    <div class="signature-space"></div>
+                    ( {{ $record->dokter?->name ?? '____________________' }} )
+                </div>
+                <div class="signer" style="float: right;">
+                    (Nama dan TTD Perawat)
+                    <div class="signature-space"></div>
+                    ( ____________________ )
+                </div>
+            </div>
+        </div> <!-- End of main-container -->
 </body>
 
 </html>

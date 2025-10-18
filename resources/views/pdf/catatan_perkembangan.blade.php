@@ -66,6 +66,7 @@
             text-align: center;
             background-color: #f2f2f2;
         }
+
         .text-xs {
             font-size: 0.50rem;
         }
@@ -121,7 +122,7 @@
                         <td>{!! nl2br(e($catatan->instruksi_ppa)) !!}</td>
                         <td style="text-align: center;">
                             {{-- Tanda tangan digital adalah nama yang tercatat --}}
-                            {{-- {{ $catatan->ppa?->name }} --}}
+                            {{ $catatan->ppa?->name }}
                         </td>
                     </tr>
                 @empty
