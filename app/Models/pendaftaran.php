@@ -115,3 +115,4 @@ class Pendaftaran extends Model
         return $this->hasMany(CatatanPerkembangan::class);
     }
 }
+

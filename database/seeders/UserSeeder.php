@@ -62,11 +62,11 @@ class UserSeeder extends Seeder
             'poli_id' => $poliTindakan->id,
         ]);
 
-        User::factory()->create([
-            'name' => 'Apoteker Ani',
-            'email' => 'apoteker@puskesmas.com',
-            'password' => Hash::make('password'),
-            'role' => 'apoteker',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Apoteker Ani',
+        //     'email' => 'apoteker@puskesmas.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'apoteker',
+        // ]);
     }
 }
