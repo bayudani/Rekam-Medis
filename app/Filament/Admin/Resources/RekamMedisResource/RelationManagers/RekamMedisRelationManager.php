@@ -16,13 +16,11 @@ class RekamMedisRelationManager extends RelationManager
 
     protected static ?string $title = 'Formulir Triase Pasien Gawat Darurat';
 
-    // "Satpam" buat ngecek, ini cuma boleh muncul di Ruang Tindakan
     public static function canViewForRecord(Model $ownerRecord, string $pageName): bool
     {
         return $ownerRecord->poli?->nama_poli === 'Ruang Tindakan';
     }
 
-    // Definisi form untuk create dan edit
     public function form(Form $form): Form
     {
         return $form
@@ -69,7 +67,7 @@ class RekamMedisRelationManager extends RelationManager
                             'Darurat' => 'Darurat',
                             'Tidak Gawat Tidak Darurat' => 'Tidak Gawat Tidak Darurat',
                             'Meninggal' => 'Meninggal',
-                        ])->columnSpanFull()->required(), // Ditambahin required biar wajib diisi
+                        ])->columnSpanFull()->required(),
                     ]),
 
                 Forms\Components\Section::make('Initial Assessment & Triase Primer')
@@ -124,20 +122,26 @@ class RekamMedisRelationManager extends RelationManager
                                 Forms\Components\TextInput::make('bb')->label('BB')->suffix('kg'),
                                 Forms\Components\TextInput::make('tb')->label('TB')->suffix('cm'),
                             ]),
-                        Forms\Components\Toggle::make('ada_keluhan_nyeri')->label('Apakah terdapat keluhan nyeri?')->live()->inline(false),
-                        Forms\Components\TextInput::make('skor_nyeri')->label('Bila Ya, berapa skala nyerinya?')->numeric()->minValue(0)->maxValue(10)->visible(fn (Get $get) => $get('ada_keluhan_nyeri')),
+                       Forms\Components\ToggleButtons::make('skala_nyeri')
+                        ->label('Skala Nyeri')
+                        ->options(['0' => 'Tidak', '1' => 'Ya'])
+                        ->inline()->boolean()->live(),
+                    Forms\Components\Select::make('skor_nyeri')->options(array_combine(range(0, 10), range(0, 10)))->visible(fn (Forms\Get $get) => $get('skala_nyeri')),
                     ]),
             ]);
     }
 
-    // Definisi tabel untuk nampilin data yang udah ada
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('pendaftaran_id')
-            // --- BAGIAN INI DIPERBAIKI ---
+            ->recordTitleAttribute('id')
             ->columns([
-                // Kolom ditambahin biar data yang udah diinput keliatan
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('pendaftaran_id')
+                    ->label('Pendaftaran ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('kondisi')
                     ->label('Kondisi Pasien')
                     ->badge()
@@ -148,31 +152,46 @@ class RekamMedisRelationManager extends RelationManager
                         'Meninggal' => 'gray',
                         default => 'primary',
                     })
+                    ->default('Belum Dinilai')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_datang')
+                    ->label('Tanggal Datang')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jam_datang')
+                    ->label('Jam Datang'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu Dibuat')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true), // Bisa di-hide kalo mau
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                // Action-nya disederhanain, cukup gini aja udah otomatis manggil form() di atas
                 Tables\Actions\CreateAction::make()
-                    ->label('Tambah Formulir Baru'),
+                    ->label('Tambah Formulir Triase')
+                    ->icon('heroicon-o-plus-circle')
+                    ->modalHeading('Formulir Triase Pasien Gawat Darurat')
+                    ->modalWidth('7xl'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat')
+                    ->modalHeading('Detail Formulir Triase')
+                    ->modalWidth('7xl'),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit')
+                    ->modalHeading('Edit Formulir Triase')
+                    ->modalWidth('7xl'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->emptyStateHeading('Belum Ada Formulir Triase')
-            ->emptyStateDescription('Buat formulir baru untuk pendaftaran ini.');
+            ]);
     }
 }

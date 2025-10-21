@@ -38,7 +38,7 @@ class RekamMedisResource extends Resource
         }
         return $user->role === 'dokter';
     }
-    
+
 
     public static function getEloquentQuery(): Builder
     {
@@ -71,8 +71,8 @@ class RekamMedisResource extends Resource
                             Forms\Components\Section::make('Status & Waktu Kunjungan')
                                 ->schema(self::getSkemaStatusKunjungan()), // Panggil skema status
                         ])->columnSpan(1),
-                        
-                        
+
+
                         // Wizard disembunyikan di sini
                     ];
                 }
@@ -112,8 +112,11 @@ class RekamMedisResource extends Resource
                 Tables\Columns\TextColumn::make('pasien.nama')->label('Nama Pasien')->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'Menunggu' => 'warning', 'Diperiksa' => 'info', 'Selesai' => 'success', default => 'gray',
+                    ->color(fn(string $state): string => match ($state) {
+                        'Menunggu' => 'warning',
+                        'Diperiksa' => 'info',
+                        'Selesai' => 'success',
+                        default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('created_at')->label('Waktu Daftar')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->label('Terakhir Diperiksa')->dateTime()->sortable(),
@@ -143,14 +146,38 @@ class RekamMedisResource extends Resource
                         }
                         $pdf = Pdf::loadView($viewName, ['record' => $record]);
                         $filename = 'RM_' . $record->pasien?->no_rm . '_' . now()->format('Ymd') . '.pdf';
-                        return response()->streamDownload(fn () => print($pdf->output()), $filename);
+                        return response()->streamDownload(fn() => print($pdf->output()), $filename);
+                    })
+                    ->openUrlInNewTab(),
+
+                Tables\Actions\Action::make('cetakTindakanPdf')
+                    ->label('Cetak PDF Tindakan')
+                    ->icon('heroicon-o-printer')
+                    ->color('danger')
+                    ->visible(fn(Pendaftaran $record) => $record->poli?->nama_poli === 'Ruang Tindakan')
+                    ->action(function (Pendaftaran $record) {
+                        // Cek apakah ada data rekam medis (ambil yang pertama/terbaru)
+                        $rekamMedis = $record->rekamMedis()->first();
+
+                        if (!$rekamMedis) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Data Belum Lengkap')
+                                ->body('Formulir Triase Gawat Darurat belum diisi.')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        $pdf = Pdf::loadView('pdf.tindakan', ['record' => $record]);
+                        $filename = 'RM_Tindakan_' . $record->pasien?->no_rm . '_' . now()->format('Ymd') . '.pdf';
+                        return response()->streamDownload(fn() => print($pdf->output()), $filename);
                     })
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([]);
     }
 
-    
+
     public static function getRelations(): array
     {
         return [
@@ -175,13 +202,13 @@ class RekamMedisResource extends Resource
         return [
             Forms\Components\Placeholder::make('no_rm')
                 ->label('No. RM')
-                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->no_rm ?? '-'),
+                ->content(fn(?Pendaftaran $record): string => $record?->pasien?->no_rm ?? '-'),
             Forms\Components\Placeholder::make('nama_pasien')
                 ->label('Nama Pasien')
-                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->nama ?? '-'),
+                ->content(fn(?Pendaftaran $record): string => $record?->pasien?->nama ?? '-'),
             Forms\Components\Placeholder::make('jenis_kelamin')
                 ->label('Jenis Kelamin')
-                ->content(fn (?Pendaftaran $record): string => $record?->pasien?->jk === 'L' ? 'Laki-laki' : 'Perempuan'),
+                ->content(fn(?Pendaftaran $record): string => $record?->pasien?->jk === 'L' ? 'Laki-laki' : 'Perempuan'),
             Forms\Components\Placeholder::make('umur')
                 ->label('Tgl. Lahir / Umur')
                 ->content(function (?Pendaftaran $record): string {
@@ -225,7 +252,7 @@ class RekamMedisResource extends Resource
                         ->label('Alergi')
                         ->options(['0' => 'Tidak', '1' => 'Ya'])
                         ->inline()->boolean()->live(),
-                    Forms\Components\TextInput::make('alergi_keterangan')->label('Sebutkan Alergi')->visible(fn (Forms\Get $get) => $get('ada_alergi')),
+                    Forms\Components\TextInput::make('alergi_keterangan')->label('Sebutkan Alergi')->visible(fn(Forms\Get $get) => $get('ada_alergi')),
                     Forms\Components\CheckboxList::make('status_psikologis')
                         ->options(['Tenang' => 'Tenang', 'Cemas' => 'Cemas', 'Takut' => 'Takut', 'Marah' => 'Marah', 'Sedih' => 'Sedih', 'Cenderung Bunuh Diri' => 'Cenderung Bunuh Diri'])->columns(3),
                 ])->columns(2),
@@ -252,20 +279,20 @@ class RekamMedisResource extends Resource
                         ->label('Skala Nyeri')
                         ->options(['0' => 'Tidak', '1' => 'Ya'])
                         ->inline()->boolean()->live(),
-                    Forms\Components\Select::make('skor_nyeri')->options(array_combine(range(0, 10), range(0, 10)))->visible(fn (Forms\Get $get) => $get('skala_nyeri')),
+                    Forms\Components\Select::make('skor_nyeri')->options(array_combine(range(0, 10), range(0, 10)))->visible(fn(Forms\Get $get) => $get('skala_nyeri')),
                     Forms\Components\Radio::make('status_fungsional')->options(['Mandiri' => 'Mandiri', 'Perlu Bantuan' => 'Perlu Bantuan', 'Ketergantungan total' => 'Ketergantungan total']),
                     Forms\Components\Fieldset::make('Risiko Jatuh')
                         ->schema([
                             Forms\Components\Checkbox::make('risiko_jatuh_penilaian_1')
                                 ->label('Cara berjalan pasien (tidak seimbang/sempoyongan/limbung/menggunakan alat bantu)')
                                 ->live() // <-- Bikin jadi interaktif
-                                ->afterStateUpdated(fn (Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
+                                ->afterStateUpdated(fn(Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
 
                             Forms\Components\Checkbox::make('risiko_jatuh_penilaian_2')
                                 ->label('Menopang saat akan duduk')
                                 ->live() // <-- Bikin jadi interaktif
-                                ->afterStateUpdated(fn (Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
-                            
+                                ->afterStateUpdated(fn(Set $set, Get $get) => self::hitungRisikoJatuh($set, $get)),
+
                             // Field untuk nampilin hasilnya, dibikin disabled
                             Forms\Components\TextInput::make('risiko_jatuh_hasil')
                                 ->label('Hasil Penilaian')
@@ -281,7 +308,7 @@ class RekamMedisResource extends Resource
                 ])->columns(1),
         ];
     }
-    
+
     // Penentuan skema medis sekarang menerima record
     public static function getSkemaMedis(?Pendaftaran $record): array
     {
@@ -341,4 +368,3 @@ class RekamMedisResource extends Resource
         $set('risiko_jatuh_hasil', $hasil);
     }
 }
-

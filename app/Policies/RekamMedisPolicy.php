@@ -13,7 +13,8 @@ class RekamMedisPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        // Izinkan dokter untuk melihat daftar rekam medis
+        return $user->role === 'dokter';
     }
 
     /**
@@ -21,7 +22,8 @@ class RekamMedisPolicy
      */
     public function view(User $user, RekamMedis $rekamMedis): bool
     {
-        return false;
+        // Izinkan dokter untuk melihat detail rekam medis
+        return $user->role === 'dokter';
     }
 
     /**
@@ -29,7 +31,8 @@ class RekamMedisPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        // Izinkan dokter untuk membuat rekam medis baru
+        return $user->role === 'dokter';
     }
 
     /**
@@ -37,7 +40,8 @@ class RekamMedisPolicy
      */
     public function update(User $user, RekamMedis $rekamMedis): bool
     {
-        return false;
+        // Izinkan dokter untuk mengupdate rekam medis
+        return $user->role === 'dokter';
     }
 
     /**
@@ -45,7 +49,8 @@ class RekamMedisPolicy
      */
     public function delete(User $user, RekamMedis $rekamMedis): bool
     {
-        return false;
+        // Izinkan dokter untuk menghapus rekam medis
+        return $user->role === 'dokter';
     }
 
     /**
@@ -53,7 +58,7 @@ class RekamMedisPolicy
      */
     public function restore(User $user, RekamMedis $rekamMedis): bool
     {
-        return false;
+        return $user->role === 'dokter';
     }
 
     /**
@@ -61,6 +66,6 @@ class RekamMedisPolicy
      */
     public function forceDelete(User $user, RekamMedis $rekamMedis): bool
     {
-        return false;
+        return $user->role === 'dokter';
     }
 }

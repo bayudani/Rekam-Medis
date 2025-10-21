@@ -106,10 +106,10 @@ class Pendaftaran extends Model
         return $this->belongsTo(User::class, 'dokter_id');
     }
     // rekamMedis
-    public function rekamMedis(): HasOne
-    {
-        return $this->hasOne(RekamMedis::class);
-    }
+    public function rekamMedis()
+{
+    return $this->hasMany(RekamMedis::class, 'pendaftaran_id');
+}
     public function catatanPerkembangans(): HasMany
     {
         return $this->hasMany(CatatanPerkembangan::class);
