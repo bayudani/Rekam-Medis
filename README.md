@@ -1,61 +1,193 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Informasi Rekam Medis Puskesmas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi Sistem Informasi Rekam Medis untuk Puskesmas yang dibangun dengan Laravel 12 dan Filament 3. Sistem ini dirancang untuk memudahkan pengelolaan data rekam medis pasien, pendaftaran, jadwal dokter, dan administrasi puskesmas.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Manajemen Data
+- **Manajemen Pasien**: Pendaftaran dan pengelolaan data pasien dengan nomor rekam medis otomatis (RM-XXX)
+- **Rekam Medis**: Pencatatan lengkap rekam medis pasien termasuk:
+  - Tanda vital (tekanan darah, nadi, respirasi, suhu, berat badan, tinggi badan)
+  - Riwayat alergi dan penyakit dahulu
+  - Pemeriksaan awal dan triase (emergency, urgent, non-urgent, false emergency)
+  - Catatan perkembangan pasien
+- **Manajemen Poli**: Pengelolaan poli/klinik di puskesmas
+- **Jadwal Dokter**: Penjadwalan dan pengelolaan jadwal praktik dokter
+- **Pendaftaran**: Sistem pendaftaran pasien dan antrian
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Panel Administrasi
+- **Admin Panel**: Panel administrasi lengkap dengan Filament untuk mengelola seluruh data
+- **Dashboard**: Dashboard dengan statistik dan grafik kunjungan pasien
+- **User Management**: Pengelolaan user dan hak akses
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Fitur Website
+- Halaman informasi tentang puskesmas
+- Jadwal dokter untuk pasien
+- Cara berobat di puskesmas
+- Informasi kontak
 
-## Learning Laravel
+### Export & Reporting
+- Export data dalam berbagai format menggunakan Filament Export
+- Generate PDF untuk laporan menggunakan Laravel DomPDF
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Teknologi yang Digunakan
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Backend Framework**: Laravel 12
+- **Admin Panel**: Filament 3.3
+- **Frontend**: 
+  - Livewire 3.6 & Volt
+  - Tailwind CSS 3
+  - Vite 7
+- **Database**: SQLite (default), support MySQL/PostgreSQL
+- **PDF Generation**: Laravel DomPDF
+- **PHP Version**: ^8.2
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Persyaratan Sistem
 
-## Laravel Sponsors
+- PHP >= 8.2
+- Composer
+- Node.js & NPM
+- SQLite/MySQL/PostgreSQL
+- Extension PHP yang diperlukan: PDO, mbstring, tokenizer, XML, ctype, JSON, BCMath
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Instalasi
 
-### Premium Partners
+### 1. Clone Repository
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+git clone https://github.com/bayudani/Rekam-Medis.git
+cd Rekam-Medis
+```
 
-## Contributing
+### 2. Install Dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# Install PHP dependencies
+composer install
 
-## Code of Conduct
+# Install JavaScript dependencies
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Konfigurasi Environment
 
-## Security Vulnerabilities
+```bash
+# Copy file .env.example ke .env
+cp .env.example .env
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Generate application key
+php artisan key:generate
+```
 
-## License
+### 4. Konfigurasi Database
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Edit file `.env` sesuai dengan konfigurasi database Anda. Secara default menggunakan SQLite:
+
+```env
+DB_CONNECTION=sqlite
+```
+
+Untuk MySQL:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rekam_medis
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5. Migrasi Database
+
+```bash
+# Jalankan migrasi
+php artisan migrate
+
+# (Opsional) Jalankan seeder jika ada
+php artisan db:seed
+```
+
+### 6. Build Assets
+
+```bash
+# Untuk development
+npm run dev
+
+# Untuk production
+npm run build
+```
+
+### 7. Jalankan Aplikasi
+
+```bash
+# Menggunakan PHP built-in server
+php artisan serve
+
+# Atau menggunakan composer script (menjalankan server, queue, logs, dan vite secara bersamaan)
+composer dev
+```
+
+Aplikasi akan berjalan di `http://localhost:8000`
+
+Admin panel dapat diakses di `http://localhost:8000/admin`
+
+## Penggunaan
+
+### Membuat User Admin Pertama
+
+```bash
+php artisan make:filament-user
+```
+
+Ikuti prompt untuk membuat user admin pertama.
+
+### Menjalankan Queue Worker
+
+Jika aplikasi menggunakan jobs/queue:
+
+```bash
+php artisan queue:work
+```
+
+### Melihat Logs
+
+```bash
+php artisan pail
+```
+
+## Testing
+
+```bash
+# Jalankan tests
+composer test
+
+# Atau
+php artisan test
+```
+
+## Struktur Database
+
+Sistem ini memiliki beberapa tabel utama:
+- `users`: Data user/pengguna sistem
+- `pasiens`: Data pasien
+- `polis`: Data poli/klinik
+- `pendaftarans`: Data pendaftaran pasien
+- `rekam_medis`: Data rekam medis pasien
+- `jadwal_dokters`: Jadwal praktik dokter
+- `catatan_perkembangans`: Catatan perkembangan kondisi pasien
+
+## Kontribusi
+
+Kontribusi selalu diterima! Silakan fork repository ini dan buat pull request untuk perubahan yang Anda inginkan.
+
+## Lisensi
+
+Aplikasi ini adalah open-source software yang dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).
+
+## Kontak & Dukungan
+
+Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan buat issue di repository ini.
+
+---
+
+Dibuat dengan ❤️ menggunakan Laravel dan Filament
