@@ -60,9 +60,11 @@
             vertical-align: top;
         }
 
+        /* Disesuaikan agar lebih rapat seperti di gambar */
         .pasien-info-box .label {
-            font-weight: bold;
-            width: 35%;
+            font-weight: normal;
+            /* Di gambar tidak bold */
+            width: 30%;
         }
 
         .title-box {
@@ -90,6 +92,19 @@
             margin-bottom: 4px;
             font-size: 10pt;
         }
+
+        /* Judul Section Terpusat (BARU) */
+        .section-title-center {
+            text-align: center;
+            font-weight: bold;
+            font-size: 10pt;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 2px 0;
+        }
+
 
         .field-group {
             margin-bottom: 5px;
@@ -139,16 +154,36 @@
             text-align: center;
         }
 
-        .signature-box {
-            margin-top: 30px;
+        /* Box Tanda Tangan (BARU) */
+        .signature-box-right {
+            margin-top: 10px;
+            margin-bottom: 10px;
             width: 100%;
+            text-align: right;
         }
 
-        .signature-box .signer {
+        .signature-box-right .signer {
             display: inline-block;
-            width: 48%;
+            width: 250px;
+            /* Disesuaikan agar di kanan */
             text-align: center;
         }
+
+        /* Box Tanda Tangan Bawah (Diedit) */
+        .signature-box-bottom {
+            margin-top: 30px;
+            width: 100%;
+            text-align: right;
+            /* Diarahkan ke kanan */
+        }
+
+        .signature-box-bottom .signer {
+            display: inline-block;
+            width: 250px;
+            /* Disesuaikan */
+            text-align: center;
+        }
+
 
         .signature-space {
             height: 60px;
@@ -227,6 +262,41 @@
                     rgba(255, 255, 255, 0) 1px,
                     rgba(255, 255, 255, 0) 4px);
         }
+
+        /* DIUBAH: CSS Skala Nyeri dompdf-safe */
+        .nyeri-skala-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+
+        .nyeri-skala-table td {
+            width: 16.6%;
+            /* 100 / 6 */
+            text-align: center;
+            vertical-align: top;
+            padding: 2px;
+            border: none;
+            /* Hapus border */
+        }
+
+        .nyeri-skala-icon img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .nyeri-skala-icon {
+            font-size: 18pt;
+            /* Ukuran emoji */
+            line-height: 1;
+        }
+
+        .nyeri-skala-label {
+            font-size: 7pt;
+            /* Kecilkan font label */
+            font-weight: bold;
+            line-height: 1.2;
+        }
     </style>
 </head>
 
@@ -251,14 +321,16 @@
                                 <td>: {{ $record->pasien?->nama ?? '-' }}</td>
                             </tr>
                             <tr>
-                                <td class="label">Tgl. Lahir/Umur</td>
+                                <td class="label">Tgl. Lahir</td>
+                                <!-- Diringkas -->
                                 <td>:
                                     {{ $record->pasien?->tgl_lahir ? \Carbon\Carbon::parse($record->pasien->tgl_lahir)->format('d/m/Y') . ' (' . \Carbon\Carbon::parse($record->pasien->tgl_lahir)->age . ' Thn)' : '-' }}
                                 </td>
                             </tr>
+                            <!-- Jenis Kelamin dipindah ke bawah jika perlu, atau dihapus dari box ini -->
                             <tr>
-                                <td class="label">Jenis Kelamin</td>
-                                <td>: {{ $record->pasien?->jk == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                <td class="label">Alamat</td>
+                                <td>: {{ $record->pasien?->alamat ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="label">No. RM</td>
@@ -267,10 +339,6 @@
                             <tr>
                                 <td class="label">No. BPJS</td>
                                 <td>: {{ $record->pasien?->no_bpjs ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="label">Alamat</td>
-                                <td>: {{ $record->pasien?->alamat ?? '-' }}</td>
                             </tr>
                         </table>
                     </div>
@@ -346,6 +414,21 @@
             <b>Lain-lain:</b> {{ $record->riwayat_kesehatan_lainnya ?? '-' }}
         </div>
 
+        <!-- BARU: Kebiasaan -->
+        <div class="field-group">
+            <b>Kebiasaan:</b>
+            @php $kebiasaan = $record->kebiasaan ?? []; @endphp
+            <span class="checkbox-item"><span class="checkbox">{{ in_array('Rokok', $kebiasaan) ? 'X' : '' }}</span>
+                Rokok</span>
+            <span class="checkbox-item"><span class="checkbox">{{ in_array('Alkohol', $kebiasaan) ? 'X' : '' }}</span>
+                Alkohol</span>
+            <span class="checkbox-item"><span
+                    class="checkbox">{{ in_array('Obat Tidur', $kebiasaan) ? 'X' : '' }}</span>
+                Obat Tidur</span>
+            <span class="checkbox-item"><span class="checkbox">{{ in_array('Olahraga', $kebiasaan) ? 'X' : '' }}</span>
+                Olahraga</span>
+        </div>
+
         <div class="field-group">
             <b>Alergi:</b>
             <div class="checkbox-container">
@@ -387,23 +470,67 @@
                 <td style="border: none;">RR: {{ $record->rr ?? '-' }} x/mnt</td>
                 <td style="border: none;">HR: {{ $record->hr ?? '-' }} x/mnt</td>
                 <td style="border: none;">T: {{ $record->t ?? '-' }} °C</td>
+                <!-- BARU: Lingkar Perut -->
+                <td style="border: none;">Lingkar Perut: {{ $record->lingkar_perut ?? '-' }} cm</td>
             </tr>
             <tr>
                 <td style="border: none;">TB: {{ $record->tb ?? '-' }} cm</td>
                 <td style="border: none;">BB: {{ $record->bb ?? '-' }} kg</td>
                 <td style="border: none;">IMT: {{ $record->imt ?? '-' }}</td>
                 <td style="border: none;">SpO₂: {{ $record->spo2 ?? '-' }} %</td>
+                <td style="border: none;">&nbsp;</td>
+                <!-- Placeholder -->
+            </tr>
+            <!-- BARU: Lingkar Kepala & LILA -->
+            <tr>
+                <td colspan="3" style="border: none;">(usia 0-60 bulan) Lingkar Kepala:
+                    {{ $record->lingkar_kepala ?? '-' }} cm</td>
+                <td colspan="2" style="border: none;">LILA: {{ $record->lila ?? '-' }} cm</td>
             </tr>
         </table>
 
         <div class="field-group">
-            <b>Skala Nyeri:</b>
+            <!-- Diedit: Skala Nyeri -> NYERI -->
+            <b>NYERI:</b>
             <div class="checkbox-container">
                 <span class="checkbox-item"><span class="checkbox">{{ !$record->skala_nyeri ? 'X' : '' }}</span>
                     Tidak</span>
                 <span class="checkbox-item"><span class="checkbox">{{ $record->skala_nyeri ? 'X' : '' }}</span> Ya,
                     Skor: {{ $record->skor_nyeri ?? '-' }}</span>
             </div>
+
+            <!-- DIUBAH: Skala Nyeri Emoticon diganti Tabel (dompdf-safe) & Label baru -->
+            <table class="nyeri-skala-table">
+                <tr>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/smile.png') }}" alt="0">
+                    </td>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/slight-smile.png') }}" alt="1-3">
+                    </td>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/neutral.png') }}" alt="4-6">
+                    </td>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/worried.png') }}" alt="7">
+                    </td>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/pain.png') }}" alt="8-9">
+                    </td>
+                    <td class="nyeri-skala-icon">
+                        <img src="{{ public_path('images/emoji/crying.png') }}" alt="10">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="nyeri-skala-label">0<br>Tidak Nyeri</td>
+                    <td class="nyeri-skala-label">1-3<br>Ringan</td>
+                    <td class="nyeri-skala-label">4-6<br>Sedang</td>
+                    <td class="nyeri-skala-label">7<br>Berat</td>
+                    <td class="nyeri-skala-label">8-9<br>Sangat Berat</td>
+                    <td class="nyeri-skala-label">10<br>Tak Tertahankan</td>
+                </tr>
+            </table>
+            <!-- Akhir Skala Nyeri -->
         </div>
 
         <div class="field-group">
@@ -484,12 +611,20 @@
         <div class="field-group" style="margin-top: 10px;"><b>A:</b>
             <div class="textarea-content">{!! nl2br(e($record->a_keperawatan ?? '-')) !!}</div>
         </div>
-        <div class="field-group"><b>P:</b>
-            <div class="textarea-content">{!! nl2br(e($record->p_keperawatan ?? '-')) !!}</div>
+
+        <!-- BARU: Tanda Tangan Perawat Dipindah ke sini -->
+        <div class="signature-box-right">
+            <div class="signer">
+                (Nama dan TTD Perawat)
+                <div class="signature-space"></div>
+                ( ____________________ )
+            </div>
         </div>
 
-        <hr> <!-- Pemisah antar bagian -->
-        <div class="section-title">ASESMEN MEDIS</div>
+
+        <!-- BARU: Judul Section Terpusat -->
+        <div class="section-title-center">ASESMEN MEDIS</div>
+
         <div class="field-group"><b>Anamnesis (S):</b>
             <div class="textarea-content">{!! nl2br(e($record->anamnesis_medis ?? '-')) !!}</div>
         </div>
@@ -601,8 +736,9 @@
             <div class="textarea-content">{!! nl2br(e($record->rencana_terapi_medis ?? '-')) !!}</div>
         </div>
 
-        <hr> <!-- Pemisah antar bagian -->
-        <div class="section-title">RENCANA TINDAK LANJUT</div>
+        <!-- BARU: Judul Section -->
+        <div class="section-title" style="margin-top: 10px;">RENCANA TINDAK LANJUT</div>
+
         <div class="field-group">
             <b>Rujuk Internal:</b>
             <div class="checkbox-container">
@@ -631,18 +767,15 @@
             </div>
         </div>
 
-        <div class="signature-box">
+        <!-- Diedit: Tanda Tangan Dokter Saja, di Kanan -->
+        <div class="signature-box-bottom">
             <div class="signer">
                 Dokter Gigi Pemeriksa
                 <div class="signature-space"></div>
                 ( {{ $record->dokter?->name ?? '____________________' }} )
             </div>
-            <div class="signer" style="float: right;">
-                (Nama dan TTD Perawat)
-                <div class="signature-space"></div>
-                ( ____________________ )
-            </div>
         </div>
+
     </div> <!-- End of main-container -->
 </body>
 

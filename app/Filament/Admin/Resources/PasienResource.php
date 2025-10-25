@@ -21,6 +21,15 @@ class PasienResource extends Resource
     protected static ?string $navigationLabel = 'Data Pasien';
     protected static ?int $navigationSort = 1;
 
+    public static function getModelLabel(): string
+    {
+        return 'Pasien';
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return 'Pasien';
+    }
+
     public static function canCreate(): bool
     {
         $user = auth()->user();
@@ -94,8 +103,8 @@ class PasienResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->visible(fn () => auth()->user()->role === 'loket'),
-                Tables\Actions\DeleteAction::make()->visible(fn () => auth()->user()->role === 'loket'),
+                Tables\Actions\EditAction::make()->visible(fn() => auth()->user()->role === 'loket'),
+                Tables\Actions\DeleteAction::make()->visible(fn() => auth()->user()->role === 'loket'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -30,6 +30,14 @@ class PendaftaranResource extends Resource
     protected static ?string $navigationLabel = 'Pendaftaran Kunjungan';
     protected static ?int $navigationSort = 2;
 
+    public static function getModelLabel(): string
+    {
+        return 'Penfdataran';
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return 'Pendaftaran';
+    }
     public static function canCreate(): bool
     {
         // Hanya user dengan role 'loket' yang bisa membuat data baru
