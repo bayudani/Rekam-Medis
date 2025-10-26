@@ -21,18 +21,23 @@ return new class extends Migration
             $table->time('jam_datang')->nullable();
             $table->time('jam_diperiksa')->nullable();
             $table->time('jam_doa')->nullable();
+            $table->boolean('DOA')->default(false)->comment('Dead on Arrival');
             $table->text('riwayat_alergi')->nullable();
             $table->json('penanggung_jawab_biaya')->nullable(); // Checkbox: BPJS, Umum, dll
             $table->json('tanda_kehidupan_negatif')->nullable(); // Checkbox: Denyut Nadi (-), Respirasi (-)
 
             $table->text("riwayat_penyakit_dahulu")->nullable();
+            $table->string("keluhan_utama")->nullable();
             $table->boolean("trauma")->default(false);
             $table->string('kondisi')->nullable(); // Radio: Gawat Darurat, Darurat, dll
 
             // Initial Assessment
             $table->string('pupil')->nullable(); // isokhor / anisokhor
             $table->json('pemeriksaan_awal')->nullable(); // Checkbox: Airway & C, Breathing, dll
-            $table->string('gcs_awal')->nullable();
+            // $table->string('gcs_awal')->nullable();
+            $table->integer('gcs_e')->nullable()->comment('GCS Eye'); // Nilai Eye (1-4)
+            $table->integer('gcs_v')->nullable()->comment('GCS Verbal');      // Nilai Verbal (1-5)
+            $table->integer('gcs_m')->nullable()->comment('GCS Motorik'); // Nilai Motorik (1-6)
             $table->string('refleks_cahaya')->nullable();
 
             // Triase Primer

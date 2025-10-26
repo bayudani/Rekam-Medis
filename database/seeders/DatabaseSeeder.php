@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             JadwalDokterSeeder::class,
             PasienSeeder::class,
+            PendaftaranSeeeder::class
         ]);
 
     }
