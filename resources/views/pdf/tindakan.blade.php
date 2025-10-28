@@ -493,7 +493,7 @@
             $gcs_v = $rekamMedis->gcs_v ?? null;
             $gcs_m = $rekamMedis->gcs_m ?? null;
 
-            // FIX: Variabel skala nyeri disesuaikan untuk skala horizontal, ambil dari 'skor_nyeri'
+            //  Variabel skala nyeri disesuaikan untuk skala horizontal, ambil dari 'skor_nyeri'
             $skala_nyeri =
                 $rekamMedis->ada_keluhan_nyeri && isset($rekamMedis->skor_nyeri) ? (int) $rekamMedis->skor_nyeri : -1;
 
@@ -502,9 +502,9 @@
             $penanggung = $rekamMedis->penanggung_jawab_biaya ?? [];
             $tandaNegatif = $rekamMedis->tanda_kehidupan_negatif ?? [];
 
-            // FIX: Pisahkan array 'resusitasi' dan 'pemeriksaan_awal' sesuai form
+            // Pisahkan array 'resusitasi' dan 'pemeriksaan_awal' sesuai form
             $resusitasi = $rekamMedis->resusitasi ?? []; // Untuk Airway, Breathing, Circulation
-            $pemeriksaanAwal = $rekamMedis->pemeriksaan_awal ?? []; // Ini untuk Disability
+            $pemeriksaanAwal = $rekamMedis->pemeriksaan_awal ?? []; //  untuk Disability
 
             $emergency = $rekamMedis->emergency ?? [];
             $urgent = $rekamMedis->urgent ?? [];
@@ -1096,35 +1096,25 @@
                         <table class="pain-scale-table">
                             <!-- Baris 1: Angka 0-10 -->
                             <tr class="pain-scale-labels">
-                                <td><span
-                                        class="{{ $skala_nyeri == 0 ? 'nyeri-skor-terpilih-baru' : '' }}">0</span>
+                                <td><span class="{{ $skala_nyeri == 0 ? 'nyeri-skor-terpilih-baru' : '' }}">0</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 1 ? 'nyeri-skor-terpilih-baru' : '' }}">1</span>
+                                <td><span class="{{ $skala_nyeri == 1 ? 'nyeri-skor-terpilih-baru' : '' }}">1</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 2 ? 'nyeri-skor-terpilih-baru' : '' }}">2</span>
+                                <td><span class="{{ $skala_nyeri == 2 ? 'nyeri-skor-terpilih-baru' : '' }}">2</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 3 ? 'nyeri-skor-terpilih-baru' : '' }}">3</span>
+                                <td><span class="{{ $skala_nyeri == 3 ? 'nyeri-skor-terpilih-baru' : '' }}">3</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 4 ? 'nyeri-skor-terpilih-baru' : '' }}">4</span>
+                                <td><span class="{{ $skala_nyeri == 4 ? 'nyeri-skor-terpilih-baru' : '' }}">4</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 5 ? 'nyeri-skor-terpilih-baru' : '' }}">5</span>
+                                <td><span class="{{ $skala_nyeri == 5 ? 'nyeri-skor-terpilih-baru' : '' }}">5</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 6 ? 'nyeri-skor-terpilih-baru' : '' }}">6</span>
+                                <td><span class="{{ $skala_nyeri == 6 ? 'nyeri-skor-terpilih-baru' : '' }}">6</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 7 ? 'nyeri-skor-terpilih-baru' : '' }}">7</span>
+                                <td><span class="{{ $skala_nyeri == 7 ? 'nyeri-skor-terpilih-baru' : '' }}">7</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 8 ? 'nyeri-skor-terpilih-baru' : '' }}">8</span>
+                                <td><span class="{{ $skala_nyeri == 8 ? 'nyeri-skor-terpilih-baru' : '' }}">8</span>
                                 </td>
-                                <td><span
-                                        class="{{ $skala_nyeri == 9 ? 'nyeri-skor-terpilih-baru' : '' }}">9</span>
+                                <td><span class="{{ $skala_nyeri == 9 ? 'nyeri-skor-terpilih-baru' : '' }}">9</span>
                                 </td>
                                 <td><span
                                         class="{{ $skala_nyeri == 10 ? 'nyeri-skor-terpilih-baru' : '' }}">10</span>

@@ -938,7 +938,7 @@
             <div class="signer-right">
                 Dokter Gigi Pemeriksa
                 <div class="signature-space"></div>
-                ( {{ $record->dokter?->name ?? '____________________' }} )
+                ( {{ $dokter?->name ?? '____________________' }} )
             </div>
         </div>
 

@@ -14,13 +14,14 @@
         }
 
         @page {
-            margin: 15px;
-            /* Margin halaman lebih kecil */
+            margin: 10px;
+            /* Margin halaman lebih kecil (dari 12px) */
         }
 
         .main-container {
             border: 2px solid #000;
-            padding: 8px;
+            padding: 5px;
+            /* Padding dikurangi (dari 6px) */
             width: 100%;
             box-sizing: border-box;
         }
@@ -28,9 +29,11 @@
         .header-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
+            /* Margin dikurangi (dari 5px) */
             border-bottom: 2px solid #000;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
+            /* Padding dikurangi */
         }
 
         .header-table td {
@@ -92,28 +95,33 @@
             text-align: center;
             font-weight: bold;
             font-size: 10pt;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
+            /* Margin dikurangi (dari 3px) */
         }
 
         .section-title {
             font-weight: bold;
             font-size: 10pt;
             background-color: #e0e0e0;
-            padding: 2px;
+            padding: 1px;
+            /* Padding dikurangi (dari 2px) */
             text-align: center;
             border: 1px solid #000;
-            margin-top: 5px;
-            margin-bottom: 3px;
+            margin-top: 3px;
+            /* Margin dikurangi (dari 4px) */
+            margin-bottom: 1px;
+            /* Margin dikurangi (dari 2px) */
         }
 
         .field-group {
-            margin-bottom: 2px;
-            /* Lebih Rapat */
+            margin-bottom: 0px;
+            /* Lebih Rapat (dari 1px) */
         }
 
         .checkbox-container {
             margin-top: 2px;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            /* Margin dikurangi (dari 5px) */
         }
 
         .checkbox-item {
@@ -149,7 +157,8 @@
 
         .full-width td,
         .full-width th {
-            padding: 2px;
+            padding: 1px 2px;
+            /* Padding dikurangi */
             border: 1px solid black;
             vertical-align: top;
             font-size: 8pt;
@@ -163,13 +172,16 @@
         }
 
         .signature-box {
-            margin-top: 15px;
+            margin-top: 4px;
+            /* Margin dikurangi (dari 8px) */
             width: 100%;
-            overflow: auto; /* Menambahkan overflow untuk clear float */
+            overflow: auto;
+            /* Menambahkan overflow untuk clear float */
         }
 
         .signature-box .signer-left {
-            width: 45%; /* Lebar untuk tanda tangan kiri */
+            width: 45%;
+            /* Lebar untuk tanda tangan kiri */
             text-align: center;
             float: left;
         }
@@ -182,8 +194,11 @@
         }
 
         .signature-space {
-            height: 50px;
-            /* Lebih pendek */
+            height: 25px;
+        }
+        .signature-space-right {
+            height: 2px;
+            margin-top: 0px;
         }
 
         .flex-container {
@@ -208,6 +223,8 @@
         .ttv-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 2px;
+            /* Menambahkan margin top kecil (dari 3px) */
         }
 
         .ttv-table td {
@@ -247,12 +264,13 @@
             margin-right: 2px;
         }
 
-         /* === CSS BARU: Skala Nyeri Versi Tabel (PDF-SAFE) === */
+        /* === CSS BARU: Skala Nyeri Versi Tabel (PDF-SAFE) === */
         .pain-scale-table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            margin-top: 5px;
+            margin-top: 3px;
+            /* Margin dikurangi (dari 5px) */
         }
 
         .pain-scale-table td {
@@ -276,17 +294,49 @@
         }
 
         /* Gradasi warna PDF-safe */
-        .grad-0 { background-color: #5cb85c; }
-        .grad-1 { background-color: #7EC368; }
-        .grad-2 { background-color: #A0CE74; }
-        .grad-3 { background-color: #C2D980; }
-        .grad-4 { background-color: #E4E48C; }
-        .grad-5 { background-color: #FFFF99; }
-        .grad-6 { background-color: #F8D57D; }
-        .grad-7 { background-color: #F1AC61; }
-        .grad-8 { background-color: #E98445; }
-        .grad-9 { background-color: #E25B29; }
-        .grad-10 { background-color: #d9534f; }
+        .grad-0 {
+            background-color: #5cb85c;
+        }
+
+        .grad-1 {
+            background-color: #7EC368;
+        }
+
+        .grad-2 {
+            background-color: #A0CE74;
+        }
+
+        .grad-3 {
+            background-color: #C2D980;
+        }
+
+        .grad-4 {
+            background-color: #E4E48C;
+        }
+
+        .grad-5 {
+            background-color: #FFFF99;
+        }
+
+        .grad-6 {
+            background-color: #F8D57D;
+        }
+
+        .grad-7 {
+            background-color: #F1AC61;
+        }
+
+        .grad-8 {
+            background-color: #E98445;
+        }
+
+        .grad-9 {
+            background-color: #E25B29;
+        }
+
+        .grad-10 {
+            background-color: #d9534f;
+        }
 
         .pain-scale-ticks td {
             font-size: 9pt;
@@ -294,10 +344,16 @@
             padding-top: 0;
             border-left: 1px solid #000;
         }
-        .pain-scale-ticks td:first-child { border-left: none; } /* Hapus border tick pertama */
+
+        .pain-scale-ticks td:first-child {
+            border-left: none;
+        }
+
+        /* Hapus border tick pertama */
         .pain-scale-ticks .tick-label {
             display: inline-block;
-            margin-top: -2px; /* Tarik ke atas */
+            margin-top: -2px;
+            /* Tarik ke atas */
         }
 
 
@@ -309,19 +365,24 @@
         }
 
         .pain-scale-faces .emoji {
-            /* font-size: 16pt; */ /* DIHAPUS: tidak perlu lagi */
+            /* font-size: 16pt; */
+            /* DIHAPUS: tidak perlu lagi */
             line-height: 1;
         }
+
         /* BARU: Style untuk gambar emoji */
         .pain-scale-faces .emoji img {
             width: 25px;
             height: 25px;
             display: block;
-            margin: 0 auto 2px auto; /* Posisikan di tengah */
+            margin: 0 auto 2px auto;
+            /* Posisikan di tengah */
         }
+
         .pain-scale-faces .face-title {
             font-weight: bold;
         }
+
         .pain-scale-faces .face-range {
             font-size: 8pt;
             font-weight: bold;
@@ -330,11 +391,15 @@
         /* Lingkaran untuk skor terpilih (BARU) */
         .nyeri-skor-terpilih-baru {
             display: inline-block;
-            width: 14px; /* Lebar lingkaran */
-            height: 14px; /* Tinggi lingkaran */
-            line-height: 14px; /* Vertikal center */
+            width: 14px;
+            /* Lebar lingkaran */
+            height: 14px;
+            /* Tinggi lingkaran */
+            line-height: 14px;
+            /* Vertikal center */
             border: 1px solid #000;
-            border-radius: 50%; /* Bikin bulat */
+            border-radius: 50%;
+            /* Bikin bulat */
             background-color: #ffffa0;
             font-weight: bold;
             font-size: 8pt;
@@ -344,10 +409,12 @@
 
 <body>
     <div class="main-container">
-        <!-- KOP SURAT --><table class="header-table">
+        <!-- KOP SURAT -->
+        <table class="header-table">
             <tr>
                 <td style="width: 58%;">
-                    <!-- Lebar disesuaikan --><img src="{{ public_path('images/LogoPuskesmas.png') }}" alt="Logo" class="logo">
+                    <!-- Lebar disesuaikan -->
+                    <img src="{{ public_path('images/LogoPuskesmas.png') }}" alt="Logo" class="logo">
                     <div class="puskesmas-info">
                         <div style="font-weight:bold; font-size: 11pt;">UPT PUSKESMAS BENGKALIS</div>
                         <div style="font-size:8pt;">Jalan Awang Mahmud Desa Sel. Alam</div>
@@ -355,7 +422,9 @@
                     </div>
                 </td>
                 <td style="width: 42%;">
-                    <!-- Lebar disesuaikan --><!-- AREA PASIEN SESUAI GAMBAR --><table class="pasien-info-table">
+                    <!-- Lebar disesuaikan -->
+                    <!-- AREA PASIEN SESUAI GAMBAR -->
+                    <table class="pasien-info-table">
                         <tr>
                             <td class="label">Nama</td>
                             <td class="separator">:</td>
@@ -391,10 +460,12 @@
             </tr>
         </table>
 
-        <!-- AREA JUDUL --><div class="title">ASESMEN RAWAT JALAN</div>
+        <!-- AREA JUDUL -->
+        <div class="title">ASESMEN RAWAT JALAN</div>
         <div class="subtitle">Asesmen Keperawatan</div>
 
-        <!-- Mengganti Flexbox dengan Table agar lebih aman di PDF --><table style="width: 100%; margin-bottom: 5px;">
+        <table style="width: 100%; margin-bottom: 2px;">
+            
             <tr>
                 <td style="width: 60%;">
                     <b>Hari/ Tanggal:</b>
@@ -523,7 +594,12 @@
             </span>
         </div>
 
-        <!-- TANDA VITAL - SESUAI GAMBAR --><table class="ttv-table" style="margin-top: 5px;">
+        <div class="field-group">
+            <b>O:</b>
+            <div class="data-content">{!! nl2br(e($record->o_keperawatan ?? '-')) !!}</div>
+        </div>
+
+        <table class="ttv-table">
             <tr>
                 <td class="ttv-label">TD:</td>
                 <td class="ttv-value">{{ $record->td ?? '-' }}</td>
@@ -559,10 +635,10 @@
                 <td class="ttv-unit">%</td>
             </tr>
         </table>
-        <div style="font-size: 8pt; font-style: italic;">*Bila 0-59 bulan, Lingkar Kepala ........ cm, LILA: ........ cm</div>
+        <div style="font-size: 8pt; font-style;bold;">(Usia 0-59 bulan), <span>lingkar kepala{{ $record->lingkar_kepala ?? '-' }}</span></div>
 
-          <!-- SKALA NYERI (DIUBAH TOTAL ke Versi Tabel) -->
-        <div class="field-group" style="margin-top: 5px;">
+        <div class="field-group" style="margin-top: 2px;">
+            
             <b>NYERI:</b>
             <span class="checkbox-item">
                 <span class="checkbox-label">{{ !$record->skala_nyeri ? 'X' : '' }}</span> Tidak
@@ -571,7 +647,7 @@
                 <span class="checkbox-label">{{ $record->skala_nyeri ? 'X' : '' }}</span> Ya, Skor:
                 {{ $record->skor_nyeri ?? '-' }}
             </span>
-            
+
             @php $skor = ($record->skala_nyeri && isset($record->skor_nyeri)) ? (int)$record->skor_nyeri : -1; @endphp
 
             <table class="pain-scale-table">
@@ -603,53 +679,60 @@
                     <td class="grad-9">&nbsp;</td>
                     <td class="grad-10">&nbsp;</td>
                 </tr>
-                 <!-- Baris 3: Ticks -->
-                 <tr class="pain-scale-ticks">
+                <!-- Baris 3: Ticks -->
+                <tr class="pain-scale-ticks">
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
-                 <!-- Baris 4: Emoticon & Teks -->
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                </tr>
+                <!-- Baris 4: Emoticon & Teks -->
                 <tr class="pain-scale-faces">
-                    <td> <!-- 0 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td>
+                        <!-- 0 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/smile.png') }}" alt="0"></div>
                         <div class="face-title">Tidak Nyeri</div>
                         <div class="face-range">0</div>
                     </td>
                     <td></td> <!-- 1 -->
-                    <td> <!-- 2 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
-                        <div class="emoji"><img src="{{ public_path('images/emoji/slight-smile.png') }}" alt="1-3"></div>
+                    <td>
+                        <!-- 2 -->
+                        <div class="emoji"><img src="{{ public_path('images/emoji/slight-smile.png') }}" alt="1-3">
+                        </div>
                         <div class="face-title">Ringan</div>
                         <div class="face-range">1–3</div>
                     </td>
                     <td></td> <!-- 3 -->
-                    <td> <!-- 4 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
-                         <div class="emoji"><img src="{{ public_path('images/emoji/neutral.png') }}" alt="4-6"></div>
+                    <td>
+                        <!-- 4 -->
+                        <div class="emoji"><img src="{{ public_path('images/emoji/neutral.png') }}" alt="4-6"></div>
                         <div class="face-title">Sedang</div>
                         <div class="face-range">4–6</div>
                     </td>
                     <td></td> <!-- 5 -->
-                    <td> <!-- 6 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td>
+                        <!-- 6 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/worried.png') }}" alt="7"></div>
                         <div class="face-title">Berat</div>
                         <div class="face-range">7</div>
                     </td>
                     <td></td> <!-- 7 -->
-                    <td> <!-- 8 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td>
+                        <!-- 8 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/pain.png') }}" alt="8-9"></div>
                         <div class="face-title">Sangat Berat</div>
                         <div class="face-range">8–9</div>
                     </td>
                     <td></td> <!-- 9 -->
-                    <td> <!-- 10 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td>
+                        <!-- 10 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/crying.png') }}" alt="10"></div>
                         <div class="face-title">Tak Tahan</div>
                         <div class="face-range">10</div>
@@ -659,7 +742,8 @@
         </div>
 
 
-        <div class="field-group">
+        <div class="field-group" style="margin-top: 2px;">
+            
             <b>STATUS FUNGSIONAL:</b>
             <span class="checkbox-item">
                 <span class="checkbox-label">{{ $record->status_fungsional == 'Mandiri' ? 'X' : '' }}</span> Mandiri
@@ -675,7 +759,7 @@
             </span>
         </div>
 
-        <b style="display: block; margin-top: 5px;">RISIKO JATUH:</b>
+        <b style="display: block; margin-top: 2px;">RISIKO JATUH:</b> 
         <table class="full-width">
             <thead>
                 <tr>
@@ -705,7 +789,7 @@
             </tbody>
         </table>
 
-        <table class="full-width" style="margin-top: 3px;">
+        <table class="full-width" style="margin-top: 1px;">
             <thead>
                 <tr>
                     <th width="5%">No</th>
@@ -739,7 +823,7 @@
             </tbody>
         </table>
 
-        <div class="field-group" style="margin-top: 5px;">
+        <div class="field-group" style="margin-top: 2px;">
             <b>A:</b>
             <div class="data-content">{!! nl2br(e($record->a_keperawatan ?? '-')) !!}</div>
         </div>
@@ -748,16 +832,16 @@
             <div class="data-content">{!! nl2br(e($record->p_keperawatan ?? '-')) !!}</div>
         </div>
 
-        <div class="signature-box" style="height: 80px;"> 
-            <div class="signer-right"> 
+        <div class="signature-box" style="height: 50px;">
+            <div class="signer-right">
                 ______________________
-                <div class="signature-space"></div>
+                <div class="signature-space-right"></div> 
                 (Nama dan TTD Perawat)
             </div>
         </div>
 
-        <!-- ASESMEN MEDIS - SESUAI GAMBAR --><div class="section-title">Asesmen Medis</div>
-        <div class="field-group">
+        <div class="section-title">Asesmen Medis</div>
+        <div class="field-group" style="margin-top: 2px;">
             <b>ANAMNESIS (S):</b>
             <div class="data-content">{!! nl2br(e($record->anamnesis_medis ?? '-')) !!}</div>
         </div>
@@ -788,13 +872,14 @@
         </div>
 
 
-        <!-- RENCANA TINDAK LANJUT --><div class="section-title"
-            style="text-align: left; padding-left: 5px; background-color: #fff; border: none; border-top: 1px solid #000; border-bottom: 1px solid #000; margin-top: 8px;">
+        <!-- RENCANA TINDAK LANJUT -->
+        <div class="section-title"
+            style="text-align: left; padding-left: 5px; background-color: #fff; border: none; border-top: 1px solid #000; border-bottom: 1px solid #000; margin-top: 3px;">
             RENCANA TINDAK LANJUT:
         </div>
 
         @php $rujuk_internal = $record->rujuk_internal ?? []; @endphp
-        <div class="field-group" style="margin-top: 4px;">
+        <div class="field-group" style="margin-top: 1px;">
             <b>Rujuk Internal:</b>
             <span class="checkbox-item">
                 <span class="checkbox-label">{{ in_array('Gizi', $rujuk_internal) ? 'X' : '' }}</span> Gizi
@@ -822,16 +907,16 @@
             </span>
         </div>
 
-        <div class="signature-box">
-            <!-- Tanda tangan perawat (signer-left) DIHAPUS dari sini -->
+        <div class="signature-box" style="margin-top: 4px;">
             <div class="signer-right">
                 DOKTER PEMERIKSA
                 <div class="signature-space"></div>
-                ( {{ $record->dokter?->name ?? '____________________' }} )
+                ( {{ $dokter->name ?? '____________________' }} )
             </div>
         </div>
 
-    </div> <!-- End of main-container --></body>
+    </div> <!-- End of main-container -->
+</body>
 
 </html>
 

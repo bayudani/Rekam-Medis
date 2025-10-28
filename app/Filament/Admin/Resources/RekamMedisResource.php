@@ -92,7 +92,7 @@ class RekamMedisResource extends Resource
 
                     Forms\Components\Wizard::make([
                         Forms\Components\Wizard\Step::make('Asesmen Keperawatan')
-                            ->schema(self::getSkemaKeperawatan()),
+                            ->schema(self::getSkemaKeperawatan($record)), // DIUBAH: Kirim $record ke skema keperawatan
                         Forms\Components\Wizard\Step::make('Asesmen Medis')
                             ->schema(function () use ($record) { // Dibuat dinamis di sini
                                 return self::getSkemaMedis($record);
@@ -144,7 +144,11 @@ class RekamMedisResource extends Resource
                         if ($record->poli?->nama_poli === 'Poli Gigi & Mulut') {
                             $viewName = 'pdf.gigi';
                         }
-                        $pdf = Pdf::loadView($viewName, ['record' => $record]);
+                        $dokter = auth()->user();
+                        $pdf = Pdf::loadView($viewName, [
+                            'record' => $record,
+                            'dokter' => $dokter,
+                        ]);
                         $filename = 'RM_' . $record->pasien?->no_rm . '_' . now()->format('Ymd') . '.pdf';
                         return response()->streamDownload(fn() => print($pdf->output()), $filename);
                     })
@@ -232,7 +236,8 @@ class RekamMedisResource extends Resource
         ];
     }
 
-    public static function getSkemaKeperawatan(): array
+    // DIUBAH: Tambahkan parameter $record
+    public static function getSkemaKeperawatan(?Pendaftaran $record): array
     {
         return [
             Forms\Components\Section::make('S (Subjektif)')
@@ -263,16 +268,29 @@ class RekamMedisResource extends Resource
                     Forms\Components\Textarea::make('o_keperawatan')->label('Pemeriksaan Objektif Keperawatan'),
                     Forms\Components\Fieldset::make('Tanda-Tanda Vital (TTV)')
                         ->schema([
-                            Forms\Components\TextInput::make('td')->label('TD (mmHg)'),
-                            Forms\Components\TextInput::make('hr')->label('HR (x/mnt)'),
-                            Forms\Components\TextInput::make('rr')->label('RR (x/mnt)'),
-                            Forms\Components\TextInput::make('t')->label('T (°C)'),
-                            Forms\Components\TextInput::make('spo2')->label('SpO₂ (%)'),
-                            Forms\Components\TextInput::make('bb')->label('BB (kg)'),
-                            Forms\Components\TextInput::make('tb')->label('TB (cm)'),
-                            Forms\Components\TextInput::make('imt')->label('IMT'),
-                            Forms\Components\TextInput::make('lingkar_perut')->label('Lingkar Perut (cm)'),
-                            Forms\Components\TextInput::make('lingkar_kepala')->label('Lingkar Kepala (cm)'),
+                            Forms\Components\TextInput::make('td')->label('TD (mmHg)')->suffix('mmHg'),
+                            Forms\Components\TextInput::make('hr')->label('HR (x/mnt)')->suffix('x/mnt'),
+                            Forms\Components\TextInput::make('rr')->label('RR (x/mnt)')->suffix('x/mnt'),
+                            Forms\Components\TextInput::make('t')->label('T (°C)')->suffix('°C'),
+                            Forms\Components\TextInput::make('spo2')->label('SpO₂ (%)')->suffix('%'),
+                            Forms\Components\TextInput::make('bb')->label('BB (kg)')->suffix('kg'),
+                            Forms\Components\TextInput::make('tb')->label('TB (cm)')->suffix('cm'),
+                            Forms\Components\TextInput::make('imt')->label('IMT')->suffix('kg/m²'),
+                            Forms\Components\TextInput::make('lingkar_perut')->label('Lingkar Perut (cm)')->suffix('cm'),
+                            // DIUBAH: Logika visible untuk lingkar_kepala
+                            Forms\Components\TextInput::make('lingkar_kepala')
+                                ->label('(Usia 0 - 59 bulan) Lingkar Kepala') // Label sedikit diubah
+                                ->suffix('cm')
+                                ->visible(function () use ($record): bool { // Gunakan closure dan $record
+                                    if (!$record || !$record->pasien?->tgl_lahir) {
+                                        return false; // Sembunyikan jika data tidak ada
+                                    }
+                                    // Hitung umur dalam bulan
+                                    $tglLahir = Carbon::parse($record->pasien->tgl_lahir);
+                                    $umurBulan = $tglLahir->diffInMonths(now());
+                                    // Tampilkan jika umur >= 0 dan <= 59 bulan
+                                    return $umurBulan >= 0 && $umurBulan <= 59;
+                                }),
                             Forms\Components\TextInput::make('lila')->label('LILA (cm)'),
                         ])->columns(4),
                     Forms\Components\ToggleButtons::make('skala_nyeri')

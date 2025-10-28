@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pendaftaran_id')->unique()->constrained('pendaftarans')->onDelete('cascade');
 
-            // === BAGIAN KANAN ATAS (YANG KURANG KEMARIN) ===
+            
             $table->json('cara_datang')->nullable(); // Checkbox: Sendiri, Diantar Polisi, dll
             $table->date('tanggal_datang')->nullable();
             $table->time('jam_datang')->nullable();
