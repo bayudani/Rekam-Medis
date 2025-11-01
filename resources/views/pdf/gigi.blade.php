@@ -13,12 +13,14 @@
         }
 
         @page {
-            margin: 15px;
+            margin: 8px;
+            /* DIKURANGI LAGI: dari 10px */
         }
 
         .main-container {
             border: 2px solid #000;
-            padding: 8px;
+            padding: 4px;
+            /* DIKURANGI LAGI: dari 5px */
             width: 100%;
             box-sizing: border-box;
         }
@@ -26,9 +28,11 @@
         .header-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
+            margin-bottom: 3px;
+            /* DIKURANGI: dari 5px */
             border-bottom: 2px solid #000;
-            padding-bottom: 5px;
+            padding-bottom: 2px;
+            /* DIKURANGI: dari 3px */
         }
 
         .header-table td {
@@ -85,22 +89,26 @@
             text-align: center;
             font-weight: bold;
             font-size: 10pt;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
+            /* DIKURANGI: dari 3px */
         }
 
         .section-title {
             font-weight: bold;
             font-size: 10pt;
             background-color: #e0e0e0;
-            padding: 2px;
+            padding: 1px 2px;
             text-align: center;
             border: 1px solid #000;
-            margin-top: 5px;
-            margin-bottom: 3px;
+            margin-top: 2px;
+            /* DIKURANGI: dari 3px */
+            margin-bottom: 1px;
+            /* DIKURANGI: dari 2px */
         }
 
         .field-group {
-            margin-bottom: 2px;
+            margin-bottom: 0;
+            /* DIKURANGI LAGI: dari 1px (SUPER MEPET) */
         }
 
         .checkbox-container {
@@ -128,7 +136,8 @@
 
         .data-content {
             padding-left: 15px;
-            min-height: 15px;
+            min-height: 8px;
+            /* DIKURANGI: dari 10px */
         }
 
         table.full-width {
@@ -150,41 +159,35 @@
             background-color: #f0f0f0;
         }
 
-        /* DIUBAH: CSS TTD jadi lebih PDF-safe */
         .signature-box {
-            margin-top: 15px;
+            margin-top: 10px;
+            /* DIKURANGI: dari 15px */
             width: 100%;
             text-align: right;
-            /* Kontainer akan rata kanan */
         }
 
         .signature-box .signer-left {
-            width: 250px;
-            /* DIUBAH: dari 45% ke 250px */
+            width: 230px;
             text-align: center;
             display: inline-block;
-            /* DIUBAH: jadi inline-block */
-            /* float: left; */
-            /* Hapus float */
         }
 
         .signature-box .signer-right {
-            width: 250px;
-            /* DIUBAH: dari 45% ke 250px */
+            width: 230px;
             text-align: center;
             display: inline-block;
-            /* DIUBAH: jadi inline-block */
-            /* float: right; */
-            /* Hapus float */
         }
 
         .signature-space {
-            height: 50px;
+            height: 30px;
+            /* DIKURANGI: dari 35px (PENTING) */
         }
 
         .ttv-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 2px;
+            /* DIKURANGI: dari 3px */
         }
 
         .ttv-table td {
@@ -207,11 +210,13 @@
             width: 8%;
         }
 
-        
+
         /* === CSS TAMBAHAN UNTUK ODONTOGRAM === */
         .odontogram-pdf-container {
-            margin-top: 5px;
-            margin-bottom: 10px;
+            margin-top: 2px;
+            /* DIKURANGI: dari 3px */
+            margin-bottom: 3px;
+            /* DIKURANGI: dari 5px */
         }
 
         .odontogram-pdf {
@@ -224,8 +229,8 @@
         .odontogram-pdf td {
             border: 1px solid black;
             width: 5.8%;
-            /* Disesuaikan untuk 17 kolom */
-            height: 25px;
+            height: 20px;
+            /* DIKURANGI LAGI: dari 22px (HEMAT 8px TOTAL) */
             position: relative;
             padding: 1px;
             vertical-align: top;
@@ -260,7 +265,6 @@
         .gigi-lubang .gigi-kondisi {
             color: red;
             letter-spacing: -1px;
-            /* Biar /// lebih rapat */
         }
 
         /* === CSS BARU: Skala Nyeri Versi Tabel (PDF-SAFE) === */
@@ -268,14 +272,14 @@
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            margin-top: 5px;
+            margin-top: 2px;
+            /* DIKURANGI: dari 3px */
         }
 
         .pain-scale-table td {
             padding: 1px 0;
             vertical-align: top;
             width: 9.09%;
-            /* 100% / 11 kolom */
         }
 
         .pain-scale-labels td {
@@ -291,18 +295,49 @@
             line-height: 1px;
         }
 
-        /* Gradasi warna PDF-safe */
-        .grad-0 { background-color: #5cb85c; }
-        .grad-1 { background-color: #7EC368; }
-        .grad-2 { background-color: #A0CE74; }
-        .grad-3 { background-color: #C2D980; }
-        .grad-4 { background-color: #E4E48C; }
-        .grad-5 { background-color: #FFFF99; }
-        .grad-6 { background-color: #F8D57D; }
-        .grad-7 { background-color: #F1AC61; }
-        .grad-8 { background-color: #E98445; }
-        .grad-9 { background-color: #E25B29; }
-        .grad-10 { background-color: #d9534f; }
+        .grad-0 {
+            background-color: #5cb85c;
+        }
+
+        .grad-1 {
+            background-color: #7EC368;
+        }
+
+        .grad-2 {
+            background-color: #A0CE74;
+        }
+
+        .grad-3 {
+            background-color: #C2D980;
+        }
+
+        .grad-4 {
+            background-color: #E4E48C;
+        }
+
+        .grad-5 {
+            background-color: #FFFF99;
+        }
+
+        .grad-6 {
+            background-color: #F8D57D;
+        }
+
+        .grad-7 {
+            background-color: #F1AC61;
+        }
+
+        .grad-8 {
+            background-color: #E98445;
+        }
+
+        .grad-9 {
+            background-color: #E25B29;
+        }
+
+        .grad-10 {
+            background-color: #d9534f;
+        }
 
         .pain-scale-ticks td {
             font-size: 9pt;
@@ -310,10 +345,14 @@
             padding-top: 0;
             border-left: 1px solid #000;
         }
-        .pain-scale-ticks td:first-child { border-left: none; } /* Hapus border tick pertama */
+
+        .pain-scale-ticks td:first-child {
+            border-left: none;
+        }
+
         .pain-scale-ticks .tick-label {
             display: inline-block;
-            margin-top: -2px; /* Tarik ke atas */
+            margin-top: -2px;
         }
 
 
@@ -321,36 +360,37 @@
             font-size: 7pt;
             line-height: 1.1;
             vertical-align: top;
-            padding-top: 3px;
+            padding-top: 1px;
+            /* DIKURANGI: dari 2px */
         }
 
         .pain-scale-faces .emoji {
-            /* font-size: 16pt; */ /* DIHAPUS: tidak perlu lagi */
             line-height: 1;
         }
-        /* BARU: Style untuk gambar emoji */
+
         .pain-scale-faces .emoji img {
             width: 25px;
             height: 25px;
             display: block;
-            margin: 0 auto 2px auto; /* Posisikan di tengah */
+            margin: 0 auto 2px auto;
         }
+
         .pain-scale-faces .face-title {
             font-weight: bold;
         }
+
         .pain-scale-faces .face-range {
             font-size: 8pt;
             font-weight: bold;
         }
 
-        /* Lingkaran untuk skor terpilih (BARU) */
         .nyeri-skor-terpilih-baru {
             display: inline-block;
-            width: 14px; /* Lebar lingkaran */
-            height: 14px; /* Tinggi lingkaran */
-            line-height: 14px; /* Vertikal center */
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
             border: 1px solid #000;
-            border-radius: 50%; /* Bikin bulat */
+            border-radius: 50%;
             background-color: #ffffa0;
             font-weight: bold;
             font-size: 8pt;
@@ -413,7 +453,7 @@
         <div class="subtitle">Asesmen Keperawatan</div>
 
         <!-- Layout Tanggal (dari template lama) -->
-        <table style="width: 100%; margin-bottom: 5px;">
+        <table style="width: 100%; margin-bottom: 3px;">
             <tr>
                 <td style="width: 60%;">
                     <b>Hari/ Tanggal:</b>
@@ -544,7 +584,7 @@
         </div>
 
         <!-- TANDA VITAL (dari template lama) -->
-        <table class="ttv-table" style="margin-top: 5px;">
+        <table class="ttv-table" style="margin-top: 2px;">
             <tr>
                 <td class="ttv-label">TD:</td>
                 <td class="ttv-value">{{ $record->td ?? '-' }}</td>
@@ -584,7 +624,7 @@
         </div>
 
         <!-- SKALA NYERI (DIUBAH TOTAL ke Versi Tabel) -->
-        <div class="field-group" style="margin-top: 5px;">
+        <div class="field-group" style="margin-top: 2px;">
             <b>NYERI:</b>
             <span class="checkbox-item">
                 <span class="checkbox-label">{{ !$record->skala_nyeri ? 'X' : '' }}</span> Tidak
@@ -593,7 +633,7 @@
                 <span class="checkbox-label">{{ $record->skala_nyeri ? 'X' : '' }}</span> Ya, Skor:
                 {{ $record->skor_nyeri ?? '-' }}
             </span>
-            
+
             @php $skor = ($record->skala_nyeri && isset($record->skor_nyeri)) ? (int)$record->skor_nyeri : -1; @endphp
 
             <table class="pain-scale-table">
@@ -625,53 +665,65 @@
                     <td class="grad-9">&nbsp;</td>
                     <td class="grad-10">&nbsp;</td>
                 </tr>
-                 <!-- Baris 3: Ticks -->
-                 <tr class="pain-scale-ticks">
+                <!-- Baris 3: Ticks -->
+                <tr class="pain-scale-ticks">
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
                     <td><span class="tick-label">|</span></td>
-                 <!-- Baris 4: Emoticon & Teks -->
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                    <td><span class="tick-label">|</span></td>
+                </tr>
+                <!-- Baris 4: Emoticon & Teks -->
                 <tr class="pain-scale-faces">
-                    <td> <!-- 0 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td>
+                        <!-- 0 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/smile.png') }}" alt="0"></div>
                         <div class="face-title">Tidak Nyeri</div>
                         <div class="face-range">0</div>
                     </td>
-                    <td></td> <!-- 1 -->
-                    <td> <!-- 2 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
-                        <div class="emoji"><img src="{{ public_path('images/emoji/slight-smile.png') }}" alt="1-3"></div>
+                    <td></td>
+                    <!-- 1 -->
+                    <td>
+                        <!-- 2 -->
+                        <div class="emoji"><img src="{{ public_path('images/emoji/slight-smile.png') }}" alt="1-3">
+                        </div>
                         <div class="face-title">Ringan</div>
                         <div class="face-range">1–3</div>
                     </td>
-                    <td></td> <!-- 3 -->
-                    <td> <!-- 4 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
-                         <div class="emoji"><img src="{{ public_path('images/emoji/neutral.png') }}" alt="4-6"></div>
+                    <td></td>
+                    <!-- 3 -->
+                    <td>
+                        <!-- 4 -->
+                        <div class="emoji"><img src="{{ public_path('images/emoji/neutral.png') }}" alt="4-6"></div>
                         <div class="face-title">Sedang</div>
                         <div class="face-range">4–6</div>
                     </td>
-                    <td></td> <!-- 5 -->
-                    <td> <!-- 6 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td></td>
+                    <!-- 5 -->
+                    <td>
+                        <!-- 6 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/worried.png') }}" alt="7"></div>
                         <div class="face-title">Berat</div>
                         <div class="face-range">7</div>
                     </td>
-                    <td></td> <!-- 7 -->
-                    <td> <!-- 8 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td></td>
+                    <!-- 7 -->
+                    <td>
+                        <!-- 8 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/pain.png') }}" alt="8-9"></div>
                         <div class="face-title">Sangat Berat</div>
                         <div class="face-range">8–9</div>
                     </td>
-                    <td></td> <!-- 9 -->
-                    <td> <!-- 10 -->
-                        {{-- DIUBAH: dari emoji teks ke gambar --}}
+                    <td></td>
+                    <!-- 9 -->
+                    <td>
+                        <!-- 10 -->
                         <div class="emoji"><img src="{{ public_path('images/emoji/crying.png') }}" alt="10"></div>
                         <div class="face-title">Tak Tahan</div>
                         <div class="face-range">10</div>
@@ -698,7 +750,7 @@
             </span>
         </div>
 
-        <b style="display: block; margin-top: 5px;">RISIKO JATUH:</b>
+        <b style="display: block; margin-top: 2px;">RISIKO JATUH:</b>
         <table class="full-width">
             <thead>
                 <tr>
@@ -728,7 +780,7 @@
             </tbody>
         </table>
 
-        <table class="full-width" style="margin-top: 3px;">
+        <table class="full-width" style="margin-top: 1px;">
             <thead>
                 <tr>
                     <th width="5%">No</th>
@@ -762,18 +814,17 @@
             </tbody>
         </table>
 
-        <div class="field-group" style="margin-top: 5px;">
+        <div class="field-group" style="margin-top: 2px;">
             <b>A:</b>
             <div class="data-content">{!! nl2br(e($record->a_keperawatan ?? '-')) !!}</div>
         </div>
         <div class="field-group">
-            <!-- DIHAPUS: "AQ" yang nyasar -->
             <b>P:</b>
             <div class="data-content">{!! nl2br(e($record->p_keperawatan ?? '-')) !!}</div>
         </div>
 
-        <div class="signature-box" style="height: 80px;"> 
-            <div class="signer-right"> 
+        <div class="signature-box" style="height: 55px;">
+            <div class="signer-right">
                 ______________________
                 <div class="signature-space"></div>
                 (Nama dan TTD Perawat)
@@ -791,43 +842,43 @@
         <div class="field-group odontogram-pdf-container">
             <b>Objektif (O) Odontogram:</b>
             @php
-                $gigiData = [
-                    'atas_kanan' => [18, 17, 16, 15, 14, 13, 12, 11],
-                    'atas_kiri' => [21, 22, 23, 24, 25, 26, 27, 28],
-                    'susu_atas_kanan' => [55, 54, 53, 52, 51],
-                    'susu_atas_kiri' => [61, 62, 63, 64, 65],
-                    'bawah_kanan' => [48, 47, 46, 45, 44, 43, 42, 41],
-                    'bawah_kiri' => [31, 32, 33, 34, 35, 36, 37, 38],
-                    'susu_bawah_kanan' => [85, 84, 83, 82, 81],
-                    'susu_bawah_kiri' => [71, 72, 73, 74, 75],
-                ];
-                $odontogramRecord = $record->odontogram ?? [];
+            $gigiData = [
+            'atas_kanan' => [18, 17, 16, 15, 14, 13, 12, 11],
+            'atas_kiri' => [21, 22, 23, 24, 25, 26, 27, 28],
+            'susu_atas_kanan' => [55, 54, 53, 52, 51],
+            'susu_atas_kiri' => [61, 62, 63, 64, 65],
+            'bawah_kanan' => [48, 47, 46, 45, 44, 43, 42, 41],
+            'bawah_kiri' => [31, 32, 33, 34, 35, 36, 37, 38],
+            'susu_bawah_kanan' => [85, 84, 83, 82, 81],
+            'susu_bawah_kiri' => [71, 72, 73, 74, 75],
+            ];
+            $odontogramRecord = $record->odontogram ?? [];
 
-                $renderGigiCell = function ($nomorGigi, $odontogram) {
-                    $kondisi = $odontogram[(string) $nomorGigi] ?? [];
-                    $simbol = '&nbsp;';
-                    $class = '';
+            $renderGigiCell = function ($nomorGigi, $odontogram) {
+            $kondisi = $odontogram[(string) $nomorGigi] ?? [];
+            $simbol = '&nbsp;';
+            $class = '';
 
-                    if (in_array('cabut', $kondisi)) {
-                        $simbol = 'X';
-                    } elseif (in_array('tambal', $kondisi)) {
-                        $simbol = 'O';
-                    } elseif (in_array('lubang', $kondisi)) {
-                        $simbol = '///'; /* DIUBAH: Simbol jadi /// */
-                        $class = 'gigi-lubang'; /* DIUBAH: Class baru */
-                    }
+            if (in_array('cabut', $kondisi)) {
+            $simbol = 'X';
+            } elseif (in_array('tambal', $kondisi)) {
+            $simbol = 'O';
+            } elseif (in_array('lubang', $kondisi)) {
+            $simbol = '///';
+            $class = 'gigi-lubang';
+            }
 
-                    return '<td class="' .
-                        $class .
-                        '">
-                                <div class="gigi-nomor">' .
-                        $nomorGigi .
-                        '</div>
-                                <div class="gigi-kondisi">' .
-                        $simbol .
-                        '</div>
-                            </td>';
-                };
+            return '<td class="' .
+                $class .
+                '">
+                <div class="gigi-nomor">' .
+                $nomorGigi .
+                '</div>
+                <div class="gigi-kondisi">' .
+                $simbol .
+                '</div>
+                </td>';
+            };
             @endphp
 
             <table class="odontogram-pdf">
@@ -835,22 +886,22 @@
                     <!-- BARIS 1: DEWASA ATAS -->
                     <tr>
                         @foreach ($gigiData['atas_kanan'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong pembatas-vertikal"></td>
                         @foreach ($gigiData['atas_kiri'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                     </tr>
                     <!-- BARIS 2: SUSU ATAS -->
                     <tr>
                         <td class="gigi-kosong" colspan="3"></td>
                         @foreach ($gigiData['susu_atas_kanan'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong pembatas-vertikal"></td>
                         @foreach ($gigiData['susu_atas_kiri'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong" colspan="3"></td>
                     </tr>
@@ -862,22 +913,22 @@
                     <tr>
                         <td class="gigi-kosong" colspan="3"></td>
                         @foreach (array_reverse($gigiData['susu_bawah_kanan']) as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong pembatas-vertikal"></td>
                         @foreach ($gigiData['susu_bawah_kiri'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong" colspan="3"></td>
                     </tr>
                     <!-- BARIS 4: DEWASA BAWAH -->
                     <tr>
                         @foreach (array_reverse($gigiData['bawah_kanan']) as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                         <td class="gigi-kosong pembatas-vertikal"></td>
                         @foreach ($gigiData['bawah_kiri'] as $g)
-                            {!! $renderGigiCell($g, $odontogramRecord) !!}
+                        {!! $renderGigiCell($g, $odontogramRecord) !!}
                         @endforeach
                     </tr>
                 </tbody>
@@ -900,12 +951,12 @@
 
         <!-- RENCANA TINDAK LANJUT (dari template lama) -->
         <div class="section-title"
-            style="text-align: left; padding-left: 5px; background-color: #fff; border: none; border-top: 1px solid #000; border-bottom: 1px solid #000; margin-top: 8px;">
+            style="text-align: left; padding-left: 5px; background-color: #fff; border: none; border-top: 1px solid #000; border-bottom: 1px solid #000; margin-top: 2px;">
             RENCANA TINDAK LANJUT:
         </div>
 
         @php $rujuk_internal = $record->rujuk_internal ?? []; @endphp
-        <div class="field-group" style="margin-top: 4px;">
+        <div class="field-group" style="margin-top: 1px;">
             <b>Rujuk Internal:</b>
             <span class="checkbox-item">
                 <span class="checkbox-label">{{ in_array('Gizi', $rujuk_internal) ? 'X' : '' }}</span> Gizi
@@ -946,5 +997,4 @@
 </body>
 
 </html>
-
 
